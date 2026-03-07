@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login With Mobile OTP</h2>
+
+<form method="post" action="/Login/Verify">
+
+    <div>
+        <label>Mobile Number</label>
+        <input type="text" name="mobileNumber" placeholder="Enter Mobile Number" />
+    </div>
+
+    <br />
+
+    <button type="submit">Send OTP</button>
+
+</form>
