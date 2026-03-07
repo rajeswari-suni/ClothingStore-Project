@@ -1,46 +1,90 @@
-﻿<h2 style="text-align:center;">Select Brand</h2>
+﻿@{
+    ViewData["Title"] = "Brands";
+}
 
-<div style="display:flex; justify-content:center; gap:40px; margin-top:40px;">
+<h2 style="text-align:center;font-size:32px;
+font-weight:bold;color:#2c3e50;
+letter-spacing:2px;margin-bottom:20px;">
+Select Brand
+</h2>
 
-<div style="text-align:center;">
-<a href="/Login/Products?brand=Puma">
-<img src="https://cdn-icons-png.flaticon.com/512/5968/5968350.png" width="60"/>
+<style>
+
+.brand-container{
+display:flex;
+justify-content:center;
+gap:50px;
+margin-top:40px;
+}
+
+.brand-box{
+text-align:center;
+transition:0.3s;
+padding:10px;
+border-radius:10px;
+}
+
+.brand-box:hover{
+transform:scale(1.1);
+background-color:#f2f2f2;
+}
+
+.brand-name{
+font-weight:bold;
+font-size:16px;
+margin-top:8px;
+letter-spacing:1px;
+color:#333;
+}
+
+.brand-logo{
+width:80px;
+height:80px;
+object-fit:contain;
+}
+
+</style>
+
+<div class="brand-container">
+
+<div class="brand-box">
+<a href="/Login/Products?brand=Puma" style="text-decoration:none;">
+<img class="brand-logo"
+                 src="https://www.logodesignvalley.com/blog/wp-content/uploads/2023/02/02.jpg">
 </a>
-<br/>
-Puma
+<div class="brand-name">Puma</div>
 </div>
 
-<div style="text-align:center;">
-<a href="/Login/Products?brand=Jockey">
-<img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" width="60"/>
+<div class="brand-box">
+<a href="/Login/Products?brand=Jockey" style="text-decoration:none;">
+<img class="brand-logo"
+                 src="https://cdn.iconscout.com/icon/free/png-256/free-jockey-underwear-logo-icon-svg-download-png-2854397.png">
 </a>
-<br/>
-Jockey
+<div class="brand-name">Jockey</div>
 </div>
 
-<div style="text-align:center;">
-<a href="/Login/Products?brand=Levis">
-<img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png" width="60"/>
+<div class="brand-box">
+<a href="/Login/Products?brand=Levis" style="text-decoration:none;">
+<img class="brand-logo"
+                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Levis_logo_1892.png/250px-Levis_logo_1892.png">
 </a>
-<br/>
-Levis
+<div class="brand-name">Levis</div>
 </div>
 
-<div style="text-align:center;">
-<a href="/Login/Products?brand=Nike">
-<img src="https://cdn-icons-png.flaticon.com/512/732/732084.png" width="60"/>
+<div class="brand-box">
+<a href="/Login/Products?brand=Nike" style="text-decoration:none;">
+<img class="brand-logo"
+                 src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg">
 </a>
-<br/>
-Nike
+<div class="brand-name">Nike</div>
 </div>
 
-<div style="text-align:center;">
-<a href="/Login/Products?brand=Wrangler">
-<img src="https://cdn-icons-png.flaticon.com/512/1077/1077063.png" width="60"/>
+<div class="brand-box">
+<a href="/Login/Products?brand=Wrangler" style="text-decoration:none;">
+<img class="brand-logo"
+                 src="https://cdn.vectorstock.com/i/1000v/40/09/horse-logo-vector-46584009.jpg">
 </a>
-<br/>
-Wrangler
+<div class="brand-name">Wrangler</div>
 </div>
 
 </div>
-

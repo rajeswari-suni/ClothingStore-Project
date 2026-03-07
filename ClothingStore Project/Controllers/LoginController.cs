@@ -4,6 +4,8 @@ namespace ClothingStore_Project.Controllers
 {
     public class LoginController : Controller
     {
+        static List<string> cartProducts = new List<string>();
+        static List<int> cartPrices = new List<int>();
         public IActionResult Index()
         {
             return View();
@@ -23,15 +25,29 @@ namespace ClothingStore_Project.Controllers
         {
             return View();
         }
+
         public IActionResult Products(string brand)
         {
             ViewBag.Brand = brand;
             return View();
         }
+        
         public IActionResult Cart(string product, int price)
         {
-            ViewBag.Product = product;
-            ViewBag.Price = price;
+            cartProducts.Add(product);
+            cartPrices.Add(price);
+
+            ViewBag.Products = cartProducts;
+            ViewBag.Prices = cartPrices;
+
+            ViewBag.Total = cartPrices.Sum();
+
+            return View();
+        }
+        public IActionResult OrderSuccess()
+        {
+            cartProducts.Clear();
+            cartPrices.Clear();
 
             return View();
         }

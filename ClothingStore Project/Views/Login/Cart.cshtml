@@ -2,14 +2,36 @@
 
 <div style="text-align:center; margin-top:40px;">
 
-    <h3>Product:</h3>
-    <h2>@ViewBag.Product</h2>
+    @for (int i = 0; i < ViewBag.Products.Count; i++)
+    {
+        <h3>Product: @ViewBag.Products[i]</h3>
+        <h3>Price: ₹@ViewBag.Prices[i]</h3>
+        <hr />
+    }
 
-    <h3>Price:</h3>
-    <h2>₹ @ViewBag.Price</h2>
+    <h2>Total Price : ₹@ViewBag.Total</h2>
 
     <br />
+    
+    <div style="text-align:center;margin-top:30px;">
 
-    <a href="/Login/Brands">Continue Shopping</a>
+        <a href="/Login/Brands"
+           style="padding:10px 20px;
+background-color: lightblue;
+text-decoration:none;
+border-radius:5px;
+margin-right:20px;">
+            Continue Shopping
+        </a>
 
+        <a href="/Login/OrderSuccess"
+           style="padding:10px 20px;
+background-color: lightgreen;
+text-decoration:none;
+border-radius:5px;">
+            Place Order
+        </a>
+
+    </div>
+   
 </div>
