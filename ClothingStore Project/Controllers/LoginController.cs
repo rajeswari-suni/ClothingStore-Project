@@ -31,7 +31,10 @@ namespace ClothingStore_Project.Controllers
             ViewBag.Brand = brand;
             return View();
         }
-        
+        public IActionResult ProductDetails()
+        {
+            return View();
+        }
         public IActionResult Cart(string product, int price)
         {
             cartProducts.Add(product);
