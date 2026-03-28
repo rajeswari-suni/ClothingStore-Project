@@ -1,15 +1,47 @@
 ﻿<h2 style="text-align:center;">Your Cart</h2>
 
 <div style="text-align:center; margin-top:40px;">
-
-    @for (int i = 0; i < ViewBag.Products.Count; i++)
+    @if(ViewBag.Products != null)
     {
-        <h3>Product: @ViewBag.Products[i]</h3>
-        <h3>Price: ₹@ViewBag.Prices[i]</h3>
-        <hr />
+        <table border="1" style="width:100%; text-align:center; table-layout:fixed;">
+            <tr>
+                <th style="width:14%;">Product</th>
+                <th style="width:14%;">Price</th>
+                <th style="width:14%;">Size</th>
+                <th style="width:14%;">Color</th>
+                <th style="width:14%;">Quantity</th>
+                <th style="width:14%;">Total</th>
+                <th style="width:14%;">Action</th>
+            </tr>
+            @for (int index = 0; index < ViewBag.Products.Count; index++)
+            {
+                <tr>
+                    <td>@ViewBag.Products[index]</td>
+                    <td>₹@ViewBag.Prices[index]</td>
+                    <td>@ViewBag.Sizes[index]</td>
+                    <td>@ViewBag.Colors[index]</td>
+                    <td style="white-space:nowrap; text-align:center;" data-price="@ViewBag.Prices[index]">
+                        <button type="button" onclick="decreaseQty(this)">-</button>
+                        <span style="margin:0 10px;">1</span>
+                        <button type="button" onclick="increaseQty(this)">+</button>
+                    </td>              
+                <td class="totalPrice">₹@ViewBag.Prices[index]</td>
+                <td style="text-align:center;">
+                    <a href="/Login/Remove?index=@index" style="color:red;">Remove</a>
+                    </td>
+                </tr>
+            }
+       
+        </table>
+    }
+    else
+    {
+        <h3>No items in cart</h3>
     }
 
-    <h2>Total Price : ₹@ViewBag.Total</h2>
+    <div style="margin-top:30px;text-align:center;">
+        <h2 id="grandTotal">Total Price : $@ViewBag.Total</h2>
+    </div>
 
     <br />
     
@@ -33,5 +65,55 @@ border-radius:5px;">
         </a>
 
     </div>
-   
-</div>
+    <script>
+        function increaseQty(btn){
+            var td = btn.parentElement;
+            var qtySpan = btn.previousElementSibling;
+            var qty = parseInt(qtySpan.innerText);
+
+            qty++;
+            qtySpan.innerText = qty;
+
+            updateRowTotal(td, qty);
+            updateGrandTotal();
+        }
+
+        function decreaseQty(btn){
+            var td = btn.parentElement;
+            var qtySpan = btn.nextElementSibling;
+            var qty = parseInt(qtySpan.innerText);
+
+            if(qty > 1){
+                qty--;
+                qtySpan.innerText = qty;
+
+                updateRowTotal(td, qty);
+                updateGrandTotal();
+            }
+        }
+
+        function updateRowTotal(td, qty){
+            var price = Number(td.getAttribute("data-price"));
+            var total = price * qty;
+
+            var row = td.parentElement;
+            var totalCell = row.getElementsByClassName("totalPrice")[0];
+
+            totalCell.innerText = "₹" + total;
+        }
+
+        function updateGrandTotal(){
+            var totals = document.getElementsByClassName("totalPrice");
+            var grandTotal = 0;
+
+            for(var i=0; i<totals.length; i++){
+                var value = totals[i].innerText.replace("₹","");
+                grandTotal += parseInt(value);
+            }
+
+            document.getElementById("grandTotal").innerText =
+                "Total Price : ₹" + grandTotal;
+        }
+    </script>
+    </div>
+    

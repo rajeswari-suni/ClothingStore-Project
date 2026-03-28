@@ -27,6 +27,12 @@ namespace ClothingStore_Project.Controllers
         {
             return View();
         }
+        public IActionResult ProductDetails(string product, int price)
+        {
+            ViewBag.Product = product;
+            ViewBag.Price = price;
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

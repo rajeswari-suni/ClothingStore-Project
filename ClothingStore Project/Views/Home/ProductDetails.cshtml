@@ -1,0 +1,127 @@
+﻿<h2 style="text-align:center;">Product Details</h2>
+
+<div style="margin-top:40px;text-align:center;">
+
+    <div>
+        <img id="productImage" width="250" 
+            src="/images/@(ViewBag.Product == "T-Shirt" ? "red-tshirt.jpg" : 
+             ViewBag.Product == "Innerwear" ? "Black-Innerwear.jpg" : 
+             ViewBag.Product == "Shorts" ? "Black-Shorts.jpg" : 
+             ViewBag.Product == "Banyan" ? "Black-Banyan.jpg" : "red-tshirt.jpg")" />
+    </div>
+
+    </div>
+        
+        <h3>@ViewBag.Product</h3>
+        <h4>$@ViewBag.Price</h4>
+
+        <p><b>Select Size</b></p>
+
+        <button class="sizeBtn" onclick="selectSize(this)">S</button>
+        <button class="sizeBtn" onclick="selectSize(this)">M</button>
+        <button class="sizeBtn" onclick="selectSize(this)">L</button>
+        <button class="sizeBtn" onclick="selectSize(this)">XL</button>
+        <button class="sizeBtn" onclick="selectSize(this)">XXL</button>
+
+        <br><br>
+
+        <p><b>Select Colour</b></p>
+
+         @if(ViewBag.Product == "T-Shirt")
+{
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('red-tshirt.jpg')">Red</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('white-tshirt.jpg')">White</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('blue-tshirt.jpg')">Blue</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('green-tshirt.jpg')">Green</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('pink-tshirt.jpg')">Pink</button>
+}
+else if(ViewBag.Product == "Innerwear")
+{
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Black-Innerwear.jpg')">Black</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Maroon-Innerwear.jpg')">Maroon</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('White-Innerwear.jpg')">White</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Yellow-Innerwear.jpg')">Yellow</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Gray-Innerwear.jpg')">Gray</button>
+}
+else if(ViewBag.Product == "Shorts")
+{
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Black-Shorts.jpg')">Black</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Mink Khakhi-Shorts.jpg')">Khakhi</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Neo Navy-Shorts.jpg')">Navy</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Olive Green-Shorts.jpg')">Olive</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Teal Haze-Shorts.jpg')">Teal</button>
+}
+else if(ViewBag.Product == "Banyan")
+{
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Black-Banyan.jpg')">Black</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('blue-Banyan.jpg')">Blue</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Gardengreen-Banyan.jpg')">Green</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Mineral Maroon-Banyan.jpg')">Maroon</button>
+    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('RusticTan-Banyan.jpg')">Tan</button>
+}
+<br /><br />
+            <input type="hidden" id="selectedSize" />
+            <input type="hidden" id="selectedColor" />
+<br >
+    <button style="background:green;"onclick="addToCart()">Add To Cart</button>
+
+    <button style="background:green;"onclick="buynow()">Buy Now</button>
+
+
+<script>function changeImage(img)
+        {document.getElementById("productImage").src = "/images/" + img;
+}
+    function selectSize(btn){
+         
+
+    var buttons = document.getElementsByClassName("sizeBtn");
+
+    for(var i=0;i<buttons.length;i++){
+    buttons[i].style.background="";
+    buttons[i].style.color="";
+    }
+
+    btn.style.background="black";
+    btn.style.color="white";
+        document.getElementById("selectedSize").value = btn.innerText;
+        alter(btn.innerText);
+    }
+        function selectColor(btn){
+
+    var buttons = document.getElementsByClassName("colorBtn");
+
+    for(var i=0;i<buttons.length;i++){
+    buttons[i].style.background="";
+    buttons[i].style.color="";
+    }
+
+    btn.style.background="black";
+    btn.style.color="white";
+
+    document.getElementById("selectedColor").value = btn.innerText;
+
+    }
+        function addToCart() {
+
+        var size = document.getElementById("selectedSize").value;
+        var color = document.getElementById("selectedColor").value;
+        if(size === "" || color === ""){
+            alert("Please select size and color before adding to cart.");
+            return;
+            }
+
+        var product = '@ViewBag.Product';
+        var price = '@ViewBag.Price';
+
+        var url = "/Login/Cart?product=" + product +
+                  "&price=" + price +
+                  "&size=" + size +
+                  "&color=" + color;
+
+        window.location.href = url;
+    }
+    
+</script>
+
+
+        
