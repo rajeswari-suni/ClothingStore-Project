@@ -42,13 +42,13 @@ namespace ClothingStore_Project.Controllers
         }
         public IActionResult Cart(string product, int price,string size,string color)
         {
-            cartProducts.Add(product);
-            cartPrices.Add(price);
-            cartSizes.Add(size);
-            cartColors.Add(color);
-
-
-
+            if (!string.IsNullOrEmpty(product))
+            {
+                cartProducts.Add(product);
+                cartPrices.Add(price);
+                cartSizes.Add(size);
+                cartColors.Add(color);
+            }
             ViewBag.Products = cartProducts;
             ViewBag.Prices = cartPrices;
             ViewBag.Sizes = cartSizes;
@@ -61,24 +61,50 @@ namespace ClothingStore_Project.Controllers
             }
 
             ViewBag.Total = total;
+            if(cartProducts.Count==0)
+            { 
+                ViewBag.Total = 0; 
+            }
 
             return View();
         }
         public IActionResult Remove(int index)
         {
-            
+            if (index >= 0 && index < cartProducts.Count)
             {
                 cartProducts.RemoveAt(index);
                 cartPrices.RemoveAt(index);
-                return RedirectToAction("Cart");
+                cartSizes.RemoveAt(index);
+                cartColors.RemoveAt(index);
             }
-          
-           
+            return RedirectToAction("Cart");
+        }
+       
+        public IActionResult Address()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Payment(string name, string mobile, string address, string city, string pincode)
+        {
+            ViewBag.Name = name;
+            ViewBag.Mobile = mobile;
+            ViewBag.Address = address;
+            ViewBag.City = city;
+            ViewBag.Pincode = pincode;
+
+            int total = 0;
+            foreach (var p in cartPrices)
+            {
+                total += p;
+            }
+
+            ViewBag.Total = total;
+
+            return View();
         }
         public IActionResult OrderSuccess()
         {
-            cartProducts.Clear();
-            cartPrices.Clear();
 
             return View();
         }

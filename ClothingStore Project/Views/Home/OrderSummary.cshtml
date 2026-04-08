@@ -1,0 +1,50 @@
+﻿<h2 style="text-align:center;">Order Summary</h2>
+
+<div style="width:60%; margin:auto;">
+
+@if (ViewBag.Products != null)
+{
+        <!-- CART FLOW -->
+        <h3>Products:</h3>
+
+    @for (int i = 0; i < ViewBag.Products.Count; i++)
+    {
+            <p>
+                @ViewBag.Products[i] - ₹@ViewBag.Prices[i]
+                (Size: @ViewBag.Sizes[i], Color: @ViewBag.Colors[i])
+            </p>
+    }
+
+        <hr />
+        <h3>Total: ₹@ViewBag.Total</h3>
+
+}
+else
+{
+        <!-- BUY NOW FLOW -->
+        <h3>Product Details:</h3>
+
+        <p>Product: @ViewBag.Product</p>
+        <p>Price: ₹@ViewBag.Price</p>
+        <p>Size: @ViewBag.Size</p>
+        <p>Color: @ViewBag.Color</p>
+        <p>Quantity: @ViewBag.Qty</p>
+
+        <hr />
+        <h3>Total: ₹@(ViewBag.Price* ViewBag.Qty)</h3>
+}
+      <!--Common delivery for both-->
+    <p style="margin-top:10px;">
+        Estimated Delivery:
+        @{
+            var deliveryDate = DateTime.Now.AddDays(5);
+        }
+        @deliveryDate.ToString("dd MMM yyyy")
+    </p>
+
+    <br />
+
+    <div style="text-align:center;">
+        <a href="/Home/Address" class="btn btn-primary">Enter Address</a>
+    </div>
+    </div>

@@ -1,8 +1,249 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿<style>
+    body {
+        margin: 0;
+        font-family: Arial;
+        background: linear-gradient(135deg, #fdfbfb, #ebedee);
+        animation: fadeIn 1s ease-in;
+    }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* Page Border */
+    .page-container {
+        border: 5px solid black;
+        margin: 10px;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+        background-color: #131921;
+        color: white;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+            .navbar a:hover {
+                color: orange;
+            }
+
+    /* Search */
+    .search-box {
+        padding: 5px;
+        border-radius: 5px;
+        border: none;
+    }
+
+    /* Hero */
+    .hero {
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        text-align: center;
+        padding: 40px;
+        color: white;
+    }
+
+        .hero h1 {
+            background: linear-gradient(to right, #ffffff, #e3f2fd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-size: 36px;
+        }
+
+    /* Slider */
+    #slider {
+        width: 200px;
+        height: 200px;
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+
+    /* Button */
+    .btn {
+        padding: 10px 20px;
+        background: orange;
+        color: white;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 10px;
+        transition: 0.3s;
+    }
+
+        .btn:hover {
+            background: #ff3d00;
+            box-shadow: 0 0 10px orange;
+        }
+
+    /* Brands Section */
+    .brands {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin: 30px;
+        flex-wrap: wrap;
+    }
+
+    .brand-box {
+        background: #f06292;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        font-weight: bold;
+        transition: 0.3s;
+        cursor: pointer;
+    }
+
+        .brand-box:hover {
+            background: #d81b60;
+            transform: scale(1.1);
+        }
+
+    /* Products */
+    .products {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin: 30px;
+        flex-wrap: wrap;
+    }
+
+    .card {
+        background: white;
+        width: 200px;
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        transition: 0.3s;
+    }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+            .card img:hover {
+                transform: scale(1.1);
+            }
+</style>
+
+<div class="page-container">
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+
+        <div style="display:flex; align-items:center; gap:15px;">
+            <b>MyShop 🛍️</b>
+            <input type="text" class="search-box" placeholder="Search products..." />
+        </div>
+
+        <div>
+            <a href="/Home/Index">Home</a>
+            <a href="/Home/Products">Products</a>
+            <a href="/Home/Cart">Cart</a>
+        </div>
+
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+        <h1>Welcome to Fashion Store</h1>
+        <p>Best Brands | Best Prices</p>
+
+        <img id="slider" src="/images/red-tshirt.jpg" />
+
+        <br />
+
+        <a href="/Home/Products" class="btn">Shop Now</a>
+    </div>
+
+    <!-- SLIDER SCRIPT -->
+    <script>
+        var images = [
+            "/images/red-tshirt.jpg",
+            "/images/Black-Innerwear.jpg",
+            "/images/Black-Shorts.jpg",
+            "/images/Black-Banyan.jpg"
+        ];
+
+        var i = 0;
+
+        setInterval(function () {
+            i = (i + 1) % images.length;
+            document.getElementById("slider").src = images[i];
+        }, 2000);
+    </script>
+
+    <!-- BRANDS -->
+    <div style="text-align:center;">
+        <h2>Top Brands</h2>
+    </div>
+
+    <div class="brands">
+        <div class="brand-box">Nike</div>
+        <div class="brand-box">Puma</div>
+        <div class="brand-box">Adidas</div>
+        <div class="brand-box">Levis</div>
+        <div class="brand-box">Jockey</div>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="products">
+
+        <div class="card">
+            <img src="/images/red-tshirt.jpg" />
+            <h3>T-Shirts</h3>
+            <p>Starting ₹499</p>
+            <a href="/Home/Products?type=tshirt" class="btn">View</a>
+        </div>
+
+        <div class="card">
+            <img src="/images/Black-Innerwear.jpg" />
+            <h3>Innerwear</h3>
+            <p>Starting ₹299</p>
+            <a href="/Home/Products?type=innerwear" class="btn">View</a>
+        </div>
+
+        <div class="card">
+            <img src="/images/Black-Shorts.jpg" />
+            <h3>Shorts</h3>
+            <p>Starting ₹399</p>
+            <a href="/Home/Products?type=shorts" class="btn">View</a>
+        </div>
+
+        <div class="card">
+            <img src="/images/Black-Banyan.jpg" />
+            <h3>Banyan</h3>
+            <p>Starting ₹199</p>
+            <a href="/Home/Products?type=banyan" class="btn">View</a>
+        </div>
+
+    </div>
+
 </div>

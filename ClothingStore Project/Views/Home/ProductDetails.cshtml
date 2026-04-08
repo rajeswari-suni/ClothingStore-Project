@@ -60,20 +60,44 @@ else if(ViewBag.Product == "Banyan")
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('RusticTan-Banyan.jpg')">Tan</button>
 }
 <br /><br />
-            <input type="hidden" id="selectedSize" />
-            <input type="hidden" id="selectedColor" />
-<br >
-    <button style="background:green;"onclick="addToCart()">Add To Cart</button>
+            
 
-    <button style="background:green;"onclick="buynow()">Buy Now</button>
 
+<form method="get" action="/Home/AddToCart">
+
+    <input type="hidden" name="product" value="@ViewBag.Product" />
+    <input type="hidden" name="price" value="@ViewBag.Price" />
+
+    <input type="hidden" id="selectedSize" name="size" />
+    <input type="hidden" id="selectedColor" name="color" /> 
+
+    <label>Quantity:</label>
+    <input type="number" id="qty" name="qty" value="1" min="1" style="width:60px;margin-bottom:10px;" />
+    
+    <p style="margin-top:10px;">
+        Estimated Delivery:
+        @{
+            var deliveryDate = DateTime.Now.AddDays(5);
+        }
+        @deliveryDate.ToString("dd MMM yyyy")
+    </p>
+    
+    <br />
+
+    <button type="submit"
+            style="padding:10px 20px; background-color:blue; color:white;margin-top:10px;">
+        Add to Cart
+    </button>
+    <button type="button" onclick="buyNow()"
+            style="padding:10px 20px; background-color:blue; color:white; margin-left:10px;">
+        Buy Now
+    </button>
+</form>
 
 <script>function changeImage(img)
         {document.getElementById("productImage").src = "/images/" + img;
 }
-    function selectSize(btn){
-         
-
+    function selectSize(btn){        
     var buttons = document.getElementsByClassName("sizeBtn");
 
     for(var i=0;i<buttons.length;i++){
@@ -84,9 +108,9 @@ else if(ViewBag.Product == "Banyan")
     btn.style.background="black";
     btn.style.color="white";
         document.getElementById("selectedSize").value = btn.innerText;
-        alter(btn.innerText);
+
     }
-        function selectColor(btn){
+    function selectColor(btn){
 
     var buttons = document.getElementsByClassName("colorBtn");
 
@@ -101,26 +125,31 @@ else if(ViewBag.Product == "Banyan")
     document.getElementById("selectedColor").value = btn.innerText;
 
     }
-        function addToCart() {
+            function buyNow() {
 
         var size = document.getElementById("selectedSize").value;
         var color = document.getElementById("selectedColor").value;
-        if(size === "" || color === ""){
-            alert("Please select size and color before adding to cart.");
+        var qtyElement = document.getElementById("qty");
+
+        var qty = qtyElement ? qtyElement.value : 1;
+
+        // size/color select kakapothe stop (NO ALERT)
+        if (!size || !color) {
             return;
-            }
+        }
 
         var product = '@ViewBag.Product';
         var price = '@ViewBag.Price';
 
-        var url = "/Login/Cart?product=" + product +
-                  "&price=" + price +
-                  "&size=" + size +
-                  "&color=" + color;
+        var url = "/Home/BuyNow?product=" + encodeURIComponent(product) +
+                  "&price=" + encodeURIComponent(price) +
+                  "&size=" + encodeURIComponent(size) +
+                  "&color=" + encodeURIComponent(color) +
+                  "&qty=" + encodeURIComponent(qty);
 
         window.location.href = url;
     }
-    
+        
 </script>
 
 

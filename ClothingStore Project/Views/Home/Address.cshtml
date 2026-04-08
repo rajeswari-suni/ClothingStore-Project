@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Address";
+}
+
+<h2 style="text-align:center;">Enter Delivery Address</h2>
+
+<div style="width:50%; margin:auto;">
+
+    <form action="/Home/Payment" method="post">
+
+        <input type="text" name="name" placeholder="Full Name" required class="form-control" />
+        <br />
+
+        <input type="text" name="mobile" placeholder="Mobile Number" required class="form-control" />
+        <br />
+
+        <input type="text" name="address" placeholder="Address" required class="form-control" />
+        <br />
+
+        <input type="text" name="city" placeholder="City" required class="form-control" />
+        <br />
+
+        <input type="text" name="landmark" placeholder="Landmark" required class="form-control" />
+        <br />
+
+        <input type="text" name="pincode" placeholder="Pincode" required class="form-control" />
+        <br />
+
+        <div style="text-align:center;">
+            <button type="submit" class="btn btn-success">Continue to Payment</button>
+        </div>
+
+    </form>
+
+</div>

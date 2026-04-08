@@ -1,0 +1,52 @@
+﻿<form action="/Home/OrderSuccess"method="post">
+<h3>Select Payment Method:</h3>
+
+<input type="radio" name="payment" value="COD" onclick="showPayment('cod')" required /> Cash on Delivery
+<br />
+<br />
+
+<input type="radio" name="payment" value="UPI" onclick="showPayment('upi')" /> UPI
+<br />
+<br />
+
+<input type="radio" name="payment" value="Card" onclick="showPayment('card')" /> Debit / Credit Card
+<br />
+<br />
+
+<!-- UPI FIELD -->
+<div id="upiSection" style="display:none;">
+    <input type="text" placeholder="Enter UPI ID" /><br /><br />
+</div>
+
+<!-- CARD DETAILS -->
+<div id="cardSection" style="display:none;">
+    <input type="text" placeholder="Card Number" /><br /><br />
+    <input type="text" placeholder="Expiry Date" /><br /><br />
+    <input type="text" placeholder="CVV" /><br /><br />
+</div>
+
+<!-- BUTTON -->
+<button id="actionBtn" type="submit" style="padding:10px 20px; background-color:green; color:white;">
+    Pay Now
+</button>
+</form>
+<script>
+    function showPayment(type) {
+        document.getElementById("upiSection").style.display = "none";
+        document.getElementById("cardSection").style.display = "none";
+
+        var btn = document.getElementById("actionBtn");
+
+        if (type === "cod") {
+            btn.innerText = "Place Order";
+        }
+        else if (type === "upi") {
+            document.getElementById("upiSection").style.display = "block";
+            btn.innerText = "Pay Now";
+        }
+        else if (type === "card") {
+            document.getElementById("cardSection").style.display = "block";
+            btn.innerText = "Pay Now";
+        }
+    }
+</script>

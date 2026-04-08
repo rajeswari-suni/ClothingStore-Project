@@ -1,0 +1,157 @@
+﻿<h2 style="text-align:center;">Your Cart</h2>
+
+<div style="text-align:center; margin-top:40px;">
+@if(ViewBag.Products != null && ViewBag.Products.Count > 0)
+{
+    <table border="1" width="100%">
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Size</th>
+            <th>Color</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+
+        @for (int index = 0; index < ViewBag.Products.Count; index++)
+        {
+            <tr>
+                <td>@ViewBag.Products[index]</td>
+                <td>₹@ViewBag.Prices[index]</td>
+                <td>@ViewBag.Sizes[index]</td>
+                <td>@ViewBag.Colors[index]</td>
+
+                <td>
+                    <button onclick="decreaseQty(this)">-</button>
+                    <span>1</span>
+                    <button onclick="increaseQty(this)">+</button>
+                </td>
+
+                <td class="totalPrice">₹@ViewBag.Prices[index]</td>
+
+                <td>
+                    <a href="/Home/Remove?index=@index">Remove</a>
+                </td>
+            </tr>
+        }
+    </table>
+        <h3>Total Price : <span id="grandTotal">₹@ViewBag.Total</span></h3>
+        <div style="text-align:center; margin-top:20px;">
+
+            <a asp-controller="Home"asp-action="Products"
+               style="padding:10px 20px;
+                  background-color:#6c757d;
+                  color:white;
+                  text-decoration:none;
+                  border-radius:5px;
+                  margin-right:10px;">
+                Continue Shopping
+            </a>
+
+            <a href="/Home/OrderSummary"
+               style="padding:10px 20px;
+                  background-color:green;
+                  color:white;
+                  text-decoration:none;
+                  border-radius:5px;">
+                Place Order
+            </a>
+
+        </div>
+
+}
+else
+{
+    <h3>No items in cart</h3>
+    }
+    <script>
+        function increaseQty(btn){
+            var span = btn.previousElementSibling;
+            var qty = parseInt(span.innerText);
+            qty++;
+            span.innerText = qty;
+
+            updateTotal(btn, qty);
+        }
+
+        function decreaseQty(btn){
+            var span = btn.nextElementSibling;
+            var qty = parseInt(span.innerText);
+
+            if(qty > 1){
+                qty--;
+                span.innerText = qty;
+
+                updateTotal(btn, qty);
+            }
+        }
+
+        function updateTotal(btn, qty)
+        {
+            var row = btn.parentElement.parentElement;
+
+            var price = parseInt(row.children[1].innerText.replace("₹",""));
+            var totalCell = row.children[5];
+
+            totalCell.innerText = "₹" + (price * qty);
+            updateGrandTotal();
+        }
+
+            function updateGrandTotal()
+            {
+            var totals = document.getElementsByClassName("totalPrice");
+            var sum = 0;
+
+            for(var i=0; i<totals.length; i++){
+                var val = totals[i].innerText.replace("₹","");
+                sum += parseInt(val);
+            }
+
+            document.getElementById("grandTotal").innerText = "₹" + sum;
+        }
+       
+    </script>
+
+    <br />
+    
+    <script>
+
+    function changeImage(img){
+    document.getElementById("productImage").src = "/images/" + img;
+}
+
+    function selectSize(btn){
+    var buttons = document.getElementsByClassName("sizeBtn");
+
+    for(var i=0;i<buttons.length;i++){
+        buttons[i].style.backgroundColor="White";
+        buttons[i].style.color="black";
+    }
+
+    btn.style.background="black";
+    btn.style.color="white";
+
+    document.getElementById("selectedSize").value = btn.innerText;
+
+ 
+}
+
+    function selectColor(btn){
+    var buttons = document.getElementsByClassName("colorBtn");
+
+    for(var i=0;i<buttons.length;i++){
+        buttons[i].style.backgroundColor="White";
+        buttons[i].style.color="black";
+    }
+
+    btn.style.background="black";
+    btn.style.color="white";
+
+    document.getElementById("selectedColor").value = btn.innerText
+ 
+}
+
+</script>
+       </div>
+    
