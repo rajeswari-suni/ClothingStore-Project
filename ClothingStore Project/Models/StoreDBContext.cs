@@ -10,5 +10,6 @@ namespace ClothingStore_Project.Models
         }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Agent>Agents{get; set; }
     }
 }

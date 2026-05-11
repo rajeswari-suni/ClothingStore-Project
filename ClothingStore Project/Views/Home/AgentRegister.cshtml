@@ -1,0 +1,50 @@
+﻿@model ClothingStore_Project.Models.Agent
+
+<h2>Agent Registration</h2>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <label>Name</label>
+    <input type="text" asp-for="Name" class="form-control" />
+    <snap asp-validation-for="Name" class="text-danger"></snap>
+    <br />
+
+    <label>Email</label>
+    <input type="email" asp-for="Email" class="form-control" />
+    <snap asp-validation-for="Email"class="text-danger"></snap>
+    <br />
+
+    <label>Phone</label>
+    <input type="text" asp-for="Phone" class="form-control" />
+    <snap asp-validation-for="Phone" class="text-danger"></snap>
+    <br />
+
+    <label>Agent Code</label>
+    <input type="text" asp-for="AgentCode" class="form-control" />
+    <snap asp-validation-for="AgentCode" class="text-danger"></snap>
+    <br />
+
+    <label>Membership Type</label>
+    <select asp-for="MembershipType" class="form-control">
+        <option>Gold</option>
+        <option>Silver</option>
+        <option>Platinum</option>
+    </select>
+    <br />
+
+    <label>Subscription Amount</label>
+    <input type="number" asp-for="SubscriptionAmount" class="form-control" />
+    <br />
+
+    <button type="submit" class="btn btn-primary">
+        Register
+    </button>
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

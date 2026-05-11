@@ -1,0 +1,47 @@
+﻿@model List<ClothingStore_Project.Models.Agent>
+
+<h2>Agents List</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Agent Code</th>
+            <th>Membership</th>
+            <th>Amount</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Email</td>
+                <td>@item.Phone</td>
+                <td>@item.AgentCode</td>
+                <td>@item.MembershipType</td>
+                <td>@item.SubscriptionAmount</td>
+                <td>
+                    <a href="/Home/EditAgent/@item.Id"
+                       class="btn btn-primary">
+                       Edit
+                   </a>
+
+                    <a href="/Home/DeleteAgent/@item.Id"
+                       class="btn btn-danger">
+                        Delete
+                    </a>
+                    <a asp-action="AgentDetails"
+                      asp-route-id="@item.Id"
+                      class="btn btn-info">
+                      Details
+                     </a>
+                </td>
+                </tr>
+        }
+    </tbody>
+</table>

@@ -160,7 +160,10 @@
 
         <div style="display:flex; align-items:center; gap:15px;">
             <b>MyShop 🛍️</b>
-            <input type="text" class="search-box" placeholder="Search products..." />
+            <form method="get" action="/Home/Products">
+                <input type="text" name="type" class="search-box" placeholder="Search products..." />
+                <button type="submit">Search</button>
+            </form>
         </div>
 
         <div>

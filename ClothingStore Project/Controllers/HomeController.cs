@@ -22,11 +22,30 @@ namespace ClothingStore_Project.Controllers
         {
             return View();
         }
-        public IActionResult Products()
+        public IActionResult Products(string type)
         {
-            var products = _context.Products.ToList();
-            return View(products);
+            ViewBag.Type = type;
+
+            if (type == "tshirt")
+            {
+                ViewBag.Products = new List<string> { "Red T-Shirt", "Blue T-Shirt", "Black T-Shirt" };
+            }
+            else if (type == "innerwear")
+            {
+                ViewBag.Products = new List<string> { "Cotton Innerwear", "Sports Innerwear" };
+            }
+            else if (type == "shorts")
+            {
+                ViewBag.Products = new List<string> { "Black Shorts", "Gym Shorts" };
+            }
+            else if (type == "banyan")
+            {
+                ViewBag.Products = new List<string> { "White Banyan", "Black Banyan" };
+            }
+
+            return View();
         }
+      
         public IActionResult Privacy()
         {
             return View();
@@ -126,11 +145,61 @@ namespace ClothingStore_Project.Controllers
 
             return View();
         }
+        public IActionResult AgentList()
+        {
+            var agents = _context.Agents.ToList();
+            return View(agents);
+        }
+        public IActionResult DeleteAgent(int id)
+        {
+            var agent = _context.Agents.Find(id);
 
+            if (agent != null)
+            {
+                _context.Agents.Remove(agent);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("AgentList");
+        }
+        public IActionResult EditAgent(int id)
+        {
+            var agent = _context.Agents.Find(id);
+
+            return View(agent);
+        }
+
+        [HttpPost]
+        public IActionResult EditAgent(Agent agent)
+        {
+            _context.Agents.Update(agent);
+            _context.SaveChanges();
+
+            return RedirectToAction("AgentList");
+        }
+        public IActionResult AgentDetails(int id)
+        {
+            var agent = _context.Agents.Find(id);
+
+            return View(agent);
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public IActionResult AgentRegister()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AgentRegister(Agent agent)
+        {
+            _context.Agents.Add(agent);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }

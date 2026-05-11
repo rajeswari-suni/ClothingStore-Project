@@ -3,31 +3,32 @@
 <div style="margin-top:40px;text-align:center;">
 
     <div>
-        <img id="productImage" width="250" 
-            src="/images/@(ViewBag.Product == "T-Shirt" ? "red-tshirt.jpg" : 
-             ViewBag.Product == "Innerwear" ? "Black-Innerwear.jpg" : 
-             ViewBag.Product == "Shorts" ? "Black-Shorts.jpg" : 
-             ViewBag.Product == "Banyan" ? "Black-Banyan.jpg" : "red-tshirt.jpg")" />
+        <img id="productImage" width="250"
+             src="/images/@(ViewBag.Product == "T-Shirt" ? "red-tshirt.jpg" :
+                          ViewBag.Product == "Innerwear" ? "Black-Innerwear.jpg" :
+                          ViewBag.Product == "Shorts" ? "Black-Shorts.jpg" :
+                          ViewBag.Product == "Banyan" ? "Black-Banyan.jpg" : "red-tshirt.jpg")" />
     </div>
 
-    </div>
-        
-        <h3>@ViewBag.Product</h3>
-        <h4>$@ViewBag.Price</h4>
+</div>
 
-        <p><b>Select Size</b></p>
+<h3>@ViewBag.Product</h3>
+<h4>$@ViewBag.Price</h4>
 
-        <button class="sizeBtn" onclick="selectSize(this)">S</button>
-        <button class="sizeBtn" onclick="selectSize(this)">M</button>
-        <button class="sizeBtn" onclick="selectSize(this)">L</button>
-        <button class="sizeBtn" onclick="selectSize(this)">XL</button>
-        <button class="sizeBtn" onclick="selectSize(this)">XXL</button>
+<p><b>Select Size</b></p>
 
-        <br><br>
+<button class="sizeBtn" onclick="selectSize(this)">S</button>
+<button class="sizeBtn" onclick="selectSize(this)">M</button>
+<button class="sizeBtn" onclick="selectSize(this)">L</button>
+<button class="sizeBtn" onclick="selectSize(this)">XL</button>
+<button class="sizeBtn" onclick="selectSize(this)">XXL</button>
 
-        <p><b>Select Colour</b></p>
+<br>
+<br>
 
-         @if(ViewBag.Product == "T-Shirt")
+<p><b>Select Colour</b></p>
+
+@if (ViewBag.Product == "T-Shirt")
 {
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('red-tshirt.jpg')">Red</button>
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('white-tshirt.jpg')">White</button>
@@ -35,7 +36,7 @@
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('green-tshirt.jpg')">Green</button>
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('pink-tshirt.jpg')">Pink</button>
 }
-else if(ViewBag.Product == "Innerwear")
+else if (ViewBag.Product == "Innerwear")
 {
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Black-Innerwear.jpg')">Black</button>
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Maroon-Innerwear.jpg')">Maroon</button>
@@ -43,7 +44,7 @@ else if(ViewBag.Product == "Innerwear")
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Yellow-Innerwear.jpg')">Yellow</button>
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Gray-Innerwear.jpg')">Gray</button>
 }
-else if(ViewBag.Product == "Shorts")
+else if (ViewBag.Product == "Shorts")
 {
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Black-Shorts.jpg')">Black</button>
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Mink Khakhi-Shorts.jpg')">Khakhi</button>
@@ -51,7 +52,7 @@ else if(ViewBag.Product == "Shorts")
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Olive Green-Shorts.jpg')">Olive</button>
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Teal Haze-Shorts.jpg')">Teal</button>
 }
-else if(ViewBag.Product == "Banyan")
+else if (ViewBag.Product == "Banyan")
 {
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Black-Banyan.jpg')">Black</button>
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('blue-Banyan.jpg')">Blue</button>
@@ -59,21 +60,19 @@ else if(ViewBag.Product == "Banyan")
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Mineral Maroon-Banyan.jpg')">Maroon</button>
     <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('RusticTan-Banyan.jpg')">Tan</button>
 }
-<br /><br />
-            
-
-
-<form method="get" action="/Home/AddToCart">
+<br />
+<br />
+<form method="post" action="/Home/AddToCart">
 
     <input type="hidden" name="product" value="@ViewBag.Product" />
     <input type="hidden" name="price" value="@ViewBag.Price" />
 
     <input type="hidden" id="selectedSize" name="size" />
-    <input type="hidden" id="selectedColor" name="color" /> 
+    <input type="hidden" id="selectedColor" name="color" />
 
     <label>Quantity:</label>
     <input type="number" id="qty" name="qty" value="1" min="1" style="width:60px;margin-bottom:10px;" />
-    
+
     <p style="margin-top:10px;">
         Estimated Delivery:
         @{
@@ -81,7 +80,7 @@ else if(ViewBag.Product == "Banyan")
         }
         @deliveryDate.ToString("dd MMM yyyy")
     </p>
-    
+
     <br />
 
     <button type="submit"
@@ -94,62 +93,75 @@ else if(ViewBag.Product == "Banyan")
     </button>
 </form>
 
-<script>function changeImage(img)
-        {document.getElementById("productImage").src = "/images/" + img;
-}
-    function selectSize(btn){        
-    var buttons = document.getElementsByClassName("sizeBtn");
-
-    for(var i=0;i<buttons.length;i++){
-    buttons[i].style.background="";
-    buttons[i].style.color="";
+<script>
+    function changeImage(img)
+            {document.getElementById("productImage").src = "/images/" + img;
     }
+        function selectSize(btn){
+        var buttons = document.getElementsByClassName("sizeBtn");
 
-    btn.style.background="black";
-    btn.style.color="white";
-        document.getElementById("selectedSize").value = btn.innerText;
-
-    }
-    function selectColor(btn){
-
-    var buttons = document.getElementsByClassName("colorBtn");
-
-    for(var i=0;i<buttons.length;i++){
-    buttons[i].style.background="";
-    buttons[i].style.color="";
-    }
-
-    btn.style.background="black";
-    btn.style.color="white";
-
-    document.getElementById("selectedColor").value = btn.innerText;
-
-    }
-            function buyNow() {
-
-        var size = document.getElementById("selectedSize").value;
-        var color = document.getElementById("selectedColor").value;
-        var qtyElement = document.getElementById("qty");
-
-        var qty = qtyElement ? qtyElement.value : 1;
-
-        // size/color select kakapothe stop (NO ALERT)
-        if (!size || !color) {
-            return;
+        for(var i=0;i<buttons.length;i++){
+        buttons[i].style.background="";
+        buttons[i].style.color="";
         }
 
-        var product = '@ViewBag.Product';
-        var price = '@ViewBag.Price';
+        btn.style.background="black";
+        btn.style.color="white";
+            document.getElementById("selectedSize").value = btn.innerText;
 
-        var url = "/Home/BuyNow?product=" + encodeURIComponent(product) +
-                  "&price=" + encodeURIComponent(price) +
-                  "&size=" + encodeURIComponent(size) +
-                  "&color=" + encodeURIComponent(color) +
-                  "&qty=" + encodeURIComponent(qty);
+        }
+        function selectColor(btn){
 
-        window.location.href = url;
+        var buttons = document.getElementsByClassName("colorBtn");
+
+        for(var i=0;i<buttons.length;i++){
+        buttons[i].style.background="";
+        buttons[i].style.color="";
+        }
+
+        btn.style.background="black";
+        btn.style.color="white";
+
+        document.getElementById("selectedColor").value = btn.innerText;
+
+        }
+                function buyNow() {
+
+            var size = document.getElementById("selectedSize").value;
+            var color = document.getElementById("selectedColor").value;
+            var qtyElement = document.getElementById("qty");
+
+            var qty = qtyElement ? qtyElement.value : 1;
+
+            // size/color select kakapothe stop (NO ALERT)
+            if (!size || !color) {
+                return;
+            }
+
+            var product = '@ViewBag.Product';
+            var price = '@ViewBag.Price';
+
+            var url = "/Home/BuyNow?product=" + encodeURIComponent(product) +
+                      "&price=" + encodeURIComponent(price) +
+                      "&size=" + encodeURIComponent(size) +
+                      "&color=" + encodeURIComponent(color) +
+                      "&qty=" + encodeURIComponent(qty);
+
+            window.location.href = url;
+        }
+        function validateSelection() {
+
+    var size = document.getElementById("selectedSize").value;
+    var color = document.getElementById("selectedColor").value;
+
+    if (!size || !color) {
+        alert("Please select Size and Color");
+        return false;
     }
-        
+
+    return true;
+}
+
 </script>
 
 

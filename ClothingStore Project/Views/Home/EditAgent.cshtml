@@ -1,0 +1,37 @@
+﻿@model ClothingStore_Project.Models.Agent
+
+<h2>Edit Agent</h2>
+
+<form method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <label>Name</label>
+    <input asp-for="Name" class="form-control" />
+    <br />
+
+    <label>Email</label>
+    <input asp-for="Email" class="form-control" />
+    <br />
+
+    <label>Phone</label>
+    <input asp-for="Phone" class="form-control" />
+    <br />
+
+    <label>Agent Code</label>
+    <input asp-for="AgentCode" class="form-control" />
+    <br />
+
+    <label>Membership Type</label>
+    <input asp-for="MembershipType" class="form-control" />
+    <br />
+
+    <label>Subscription Amount</label>
+    <input asp-for="SubscriptionAmount" class="form-control" />
+    <br />
+
+    <button type="submit" class="btn btn-success">
+        Update
+    </button>
+
+</form>

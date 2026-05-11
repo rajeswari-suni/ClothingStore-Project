@@ -5,6 +5,17 @@
 
 <h2 style="text-align:center;">@ViewBag.Brand Products</h2>
 
+
+
+@if (ViewBag.Products != null)
+{
+    foreach (var item in ViewBag.Products)
+    {
+        <div style="border:1px solid #ccc; padding:10px; margin:10px; width:200px;">
+            <h4>@item</h4>
+        </div>
+    }
+}
 <div style="display:flex; justify-content:center; gap:40px; margin-top:40px; align-items:flex-start;">
     @if (type == "" || type == "tshirt")
     {
@@ -52,5 +63,28 @@
         <a href="/Home/ProductDetails?product=Banyan&price=400">View</a>
     </div>
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
    
