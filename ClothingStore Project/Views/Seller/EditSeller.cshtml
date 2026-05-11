@@ -1,0 +1,45 @@
+﻿@model ClothingStore_Project.Models.Seller
+
+<h2>Edit Seller</h2>
+
+<form method="post">
+    <div asp-validation-summary="All"class="text-danger"></div>
+
+    <input type="hidden" asp-for="Id" />
+
+    <input asp-for="Name"
+           class="form-control"
+           placeholder="Name" />
+    <br />
+
+    <input asp-for="Email"
+           class="form-control"
+           placeholder="Email" />
+    <br />
+
+    <input asp-for="Phone"
+           class="form-control"
+           placeholder="Phone" />
+    <br />
+
+    <input asp-for="ShopName"
+           class="form-control"
+           placeholder="Shop Name" />
+    <br />
+
+    <textarea asp-for="Address"
+              class="form-control"
+              placeholder="Address"></textarea>
+    <br />
+
+    <button type="submit"
+            class="btn btn-success">
+        Update
+    </button>
+
+</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
