@@ -2,13 +2,11 @@
 
 <div style="text-align:center; margin-top:40px;">
 
-    <h3>Thank you, @ViewBag.Name 😊</h3>
-
-    <h4 style="color:green;">@ViewBag.Status</h4>
+    <h3 style="color:green;">Thank you for shopping with us 😊!</h3>
 
     <br /><br />
 
-    <a href="/Home/Products"
+    <a href="/Home/Index"
        style="padding:10px 20px;
               background-color:lightblue;
               text-decoration:none;
@@ -16,4 +14,44 @@
         Continue Shopping
     </a>
 
+    <hr />
+
+    <h3>Rate This Product</h3>
+   <form action="/Home/SaveRating"
+      method="post"
+          onsubmit="alert('⭐ Thanks for your review!')">
+        <input type="hidden"
+               name="productName"
+               value="@ViewBag.ProductName" />
+
+        <label>Select Rating</label>
+
+        <div style="margin-top:10px;">
+
+            <input type="radio" name="stars" value="1"/> ⭐
+           
+            <input type="radio" name="stars" value="2" /> ⭐⭐
+            
+            <input type="radio" name="stars" value="3" /> ⭐⭐⭐
+            
+            <input type="radio" name="stars" value="4" /> ⭐⭐⭐⭐
+            
+            <input type="radio" name="stars" value="5" /> ⭐⭐⭐⭐⭐
+
+        </div>
+
+        <br />
+
+          <textarea name="review"
+          class="form-control"
+          placeholder="Write your review here..."
+          rows="4"></textarea>
+
+        <br />
+
+        <button type="submit" class="btn btn-warning">
+            Submit Rating
+        </button>
+
+    </form>
 </div>

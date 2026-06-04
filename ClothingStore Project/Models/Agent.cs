@@ -22,5 +22,6 @@ namespace ClothingStore_Project.Models
         public string MembershipType { get; set; }
 
         public decimal SubscriptionAmount { get; set; }
+        public int DiscountPercentage { get; set; }
     }
 }

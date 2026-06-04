@@ -4,7 +4,7 @@
 
 namespace ClothingStore_Project.Migrations
 {
-    public partial class FinalAgent : Migration
+    public partial class ProductIdentityFix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

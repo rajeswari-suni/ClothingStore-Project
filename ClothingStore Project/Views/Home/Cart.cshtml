@@ -22,14 +22,23 @@
                 <td>@ViewBag.Sizes[index]</td>
                 <td>@ViewBag.Colors[index]</td>
 
-                <td>
-                    <button onclick="decreaseQty(this)">-</button>
-                    <span>1</span>
-                    <button onclick="increaseQty(this)">+</button>
-                </td>
+                    <td>
 
-                <td class="totalPrice">₹@ViewBag.Prices[index]</td>
+                        <a href="/Home/DecreaseQty?index=@index">
+                            <input type="button" value="-" />
+                        </a>
 
+                        <span>@ViewBag.Qtys[index]</span>
+
+                        <a href="/Home/IncreaseQty?index=@index">
+                            <input type="button" value="+" />
+                        </a>
+
+                    </td>
+
+                    <td class="totalPrice">
+                        ₹@(Convert.ToInt32(ViewBag.Prices[index]) * ViewBag.Qtys[index])
+                    </td>
                 <td>
                     <a href="/Home/Remove?index=@index">Remove</a>
                 </td>
@@ -37,6 +46,24 @@
         }
     </table>
         <h3>Total Price : <span id="grandTotal">₹@ViewBag.Total</span></h3>
+        @if (ViewBag.Message != null)
+        {
+            <h4 style="color:red">
+                @ViewBag.Message
+            </h4>
+        }
+        
+
+         <h4 style="color:green;">
+             Discount : ₹@ViewBag.Discount
+         </h4>
+         
+         <h3 style="color:red;">
+             Final Amount : ₹@(ViewBag.Total - ViewBag.Discount)
+         </h3>
+         
+        //<h4 id="discountText"style="color:green"></h4>//
+
         <div style="text-align:center; margin-top:20px;">
 
             <a asp-controller="Home"asp-action="Products"
@@ -107,8 +134,31 @@ else
                 var val = totals[i].innerText.replace("₹","");
                 sum += parseInt(val);
             }
+            document.getElementById("grandTotal").innerHTML="₹"+sum;
 
-            document.getElementById("grandTotal").innerText = "₹" + sum;
+                   /* var discount = 0;
+
+        if (sum >= 3000 && sum < 5000)
+        {
+            discount = 5;
+        }
+        else if (sum >= 5000 && sum < 10000)
+        {
+            discount = 10;
+        }
+        else if (sum >= 10000)
+        {
+            discount = 15;
+        }
+
+        var discountAmount = (sum * discount) / 100;
+        var finalAmount = sum - discountAmount;
+            document.getElementById("discountText").innerText =
+        "You Saved ₹" + discountAmount;
+
+        document.getElementById("grandTotal").innerHTML =
+            "₹" + finalAmount +
+            " <br/><span style='color:green;'>Discount Applied : " + discount + "%</span>";*/
         }
        
     </script>

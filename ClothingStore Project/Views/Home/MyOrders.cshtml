@@ -1,0 +1,29 @@
+﻿@model List<ClothingStore_Project.Models.Order>
+
+<h2 style="text-align:center;">My Orders</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Size</th>
+            <th>Color</th>
+            <th>Quantity</th>
+            <th>Order Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ProductName</td>
+                <td>₹ @item.Price</td>
+                <td>@item.Size</td>
+                <td>@item.Color</td>
+                <td>@item.Quantity</td>
+                <td>@item.OrderDate.ToString("dd-MMM-YYYY")</td>
+            </tr>
+        }
+    </tbody>
+</table>

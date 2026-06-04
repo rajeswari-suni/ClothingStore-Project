@@ -2,11 +2,59 @@
 
 <p>Mobile Number: @ViewBag.MobileNumber</p>
 
-<div>
-    <label>Enter OTP</label>
-    <input type="text" placeholder="Enter OTP" />
-</div>
+<form method="post" asp-action="VerifyOTP">
 
-<br />
+    <input type="hidden" name="mobileNumber" value="@ViewBag.MobileNumber" />
+    <input type="hidden" name="role" value="@Context.Session.GetString("Role")" />
 
-<button>Verify OTP</button>
+    <div>
+        <label>Enter OTP</label>
+
+        <p style="color:red">
+            Demo OTP: @Context.Session.GetString("OTP")
+        </p>
+
+        <input type="text"
+               name="userOTP"
+               placeholder="Enter OTP" />
+    </div>
+
+    <br />
+
+    <button type="submit">Verify OTP</button>
+
+    <p id="timer">Resend OTP in 30 sec</p>
+
+    <button id="resendBtn"
+            type="button"
+            onclick="location.href='/Login/SendOTP?mobileNumber=@ViewBag.MobileNumber'"
+            disabled>
+        Resend OTP
+    </button>
+
+</form>
+
+<script>
+
+    let seconds = 30;
+
+    let timer = setInterval(function () {
+
+        document.getElementById("timer").innerText =
+            "Resend OTP in " + seconds + " sec";
+
+        seconds--;
+
+        if (seconds < 0)
+        {
+            clearInterval(timer);
+
+            document.getElementById("timer").innerText =
+                "You can resend OTP";
+
+            document.getElementById("resendBtn").disabled = false;
+        }
+
+    }, 1000);
+
+</script>

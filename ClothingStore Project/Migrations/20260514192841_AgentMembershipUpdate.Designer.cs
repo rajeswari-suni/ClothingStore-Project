@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClothingStore_Project.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    [Migration("20260511183856_SellerUpdate")]
-    partial class SellerUpdate
+    [Migration("20260514192841_AgentMembershipUpdate")]
+    partial class AgentMembershipUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,6 +34,9 @@ namespace ClothingStore_Project.Migrations
                     b.Property<string>("AgentCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DiscountPercentage")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -71,6 +74,14 @@ namespace ClothingStore_Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Colour")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -79,6 +90,16 @@ namespace ClothingStore_Project.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SellerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Size")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -1,71 +1,90 @@
-﻿<h2 style="text-align:center;">Product Details</h2>
+﻿@model ClothingStore_Project.Models.Product
+<h2 style="text-align:center;">Product Details</h2>
+
+@{
+    var images = Model.ImageUrl.Split(',');
+}
 
 <div style="margin-top:40px;text-align:center;">
 
     <div>
-        <img id="productImage" width="250"
-             src="/images/@(ViewBag.Product == "T-Shirt" ? "red-tshirt.jpg" :
-                          ViewBag.Product == "Innerwear" ? "Black-Innerwear.jpg" :
-                          ViewBag.Product == "Shorts" ? "Black-Shorts.jpg" :
-                          ViewBag.Product == "Banyan" ? "Black-Banyan.jpg" : "red-tshirt.jpg")" />
-    </div>
+
+<img id="productImage"
+     src="/images/@images[0]"
+     width="350" />
 
 </div>
+</div>
+<div style="margin-top:15px;
+            display:flex;
+            gap:10px;
+            justify-content:center;">
 
-<h3>@ViewBag.Product</h3>
-<h4>$@ViewBag.Price</h4>
+@for(int i=0;i<images.Length;i++)
+{
+    <img src="/images/@images[i]"
+         width="70"
+         style="cursor:pointer;
+                border:1px solid gray;
+                padding:4px;"
+
+         onclick="changeImage('@images[i]',this)" />
+}
+
+</div>
+      <h3>@Model.ProductName</h3>
+      <h4>₹ @Model.Price</h4>
+      
+      <p style="color:green;font-weight:bold;">
+          ⭐ 4.5 (120 Reviews)
+      </p>
+
+      <p>
+          <b>Description:</b>
+      </p>
+      
+      <p style="width:400px;">
+          @Model.Description
+      </p>
+
+  @if (Model.Quantity == 0)
+  {
+      <p style="color:red;font-weight:bold;font-size:18px;">
+          Sorry! This item is currently out of stock.
+      </p>
+  }
+
+<br />
 
 <p><b>Select Size</b></p>
 
-<button class="sizeBtn" onclick="selectSize(this)">S</button>
-<button class="sizeBtn" onclick="selectSize(this)">M</button>
-<button class="sizeBtn" onclick="selectSize(this)">L</button>
-<button class="sizeBtn" onclick="selectSize(this)">XL</button>
-<button class="sizeBtn" onclick="selectSize(this)">XXL</button>
-
+@foreach (var size in Model.Size.Split(','))
+{
+    <button class="sizeBtn"
+            onclick="selectSize(this)">
+        @size
+    </button>
+}
 <br>
 <br>
 
 <p><b>Select Colour</b></p>
 
-@if (ViewBag.Product == "T-Shirt")
+@foreach (var color in Model.Colour.Split(','))
 {
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('red-tshirt.jpg')">Red</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('white-tshirt.jpg')">White</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('blue-tshirt.jpg')">Blue</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('green-tshirt.jpg')">Green</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('pink-tshirt.jpg')">Pink</button>
+    <button type="button"
+            class="colorBtn"
+            onclick="selectColor(this)">
+        @color
+    </button>
 }
-else if (ViewBag.Product == "Innerwear")
-{
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Black-Innerwear.jpg')">Black</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Maroon-Innerwear.jpg')">Maroon</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('White-Innerwear.jpg')">White</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Yellow-Innerwear.jpg')">Yellow</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Gray-Innerwear.jpg')">Gray</button>
-}
-else if (ViewBag.Product == "Shorts")
-{
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Black-Shorts.jpg')">Black</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Mink Khakhi-Shorts.jpg')">Khakhi</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Neo Navy-Shorts.jpg')">Navy</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Olive Green-Shorts.jpg')">Olive</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Teal Haze-Shorts.jpg')">Teal</button>
-}
-else if (ViewBag.Product == "Banyan")
-{
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Black-Banyan.jpg')">Black</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('blue-Banyan.jpg')">Blue</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Gardengreen-Banyan.jpg')">Green</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('Mineral Maroon-Banyan.jpg')">Maroon</button>
-    <button type="button" class="colorBtn" onclick="selectColor(this);changeImage('RusticTan-Banyan.jpg')">Tan</button>
-}
-<br />
-<br />
-<form method="post" action="/Home/AddToCart">
 
-    <input type="hidden" name="product" value="@ViewBag.Product" />
-    <input type="hidden" name="price" value="@ViewBag.Price" />
+<br />
+<br />
+<form method="post" asp-action="BuyNow" asp-controller="Home">
+
+    <input type="hidden" name="product" value="@Model.ProductName" />
+    <input type="hidden" name="price" value="@Model.Price" />
 
     <input type="hidden" id="selectedSize" name="size" />
     <input type="hidden" id="selectedColor" name="color" />
@@ -83,86 +102,94 @@ else if (ViewBag.Product == "Banyan")
 
     <br />
 
-    <button type="submit"
-            style="padding:10px 20px; background-color:blue; color:white;margin-top:10px;">
-        Add to Cart
-    </button>
-    <button type="button" onclick="buyNow()"
-            style="padding:10px 20px; background-color:blue; color:white; margin-left:10px;">
-        Buy Now
-    </button>
-</form>
+    @if (Model.Quantity == 0)
+    {
+        <button disabled
+                style="padding:10px 20px; background-color:gray; color:white;">
+            Add To Cart
+        </button>
+
+        <button disabled
+                style="padding:10px 20px; background-color:gray; color:white; margin-left:10px;">
+            Buy Now
+        </button>
+    }
+    else
+    {
+        <button type="submit"
+                formaction="/Home/AddToCart"
+                style="padding:10px 20px; background-color:blue; color:white;">
+            Add To Cart
+        </button>
+
+        <button type="submit"
+                formaction="/Home/BuyNow"
+                style="padding:10px 20px; background-color:blue; color:white; margin-left:10px;">
+            Buy Now
+        </button>
+    }
+    </form>
 
 <script>
-    function changeImage(img)
-            {document.getElementById("productImage").src = "/images/" + img;
+
+        function changeImage(img){
+
+        document.getElementById("productImage").src =
+            "/images/" + img;
+
+        var colorName = img.split("-")[0];
+
+        var buttons =
+            document.getElementsByClassName("colorBtn");
+
+        for(var i=0;i<buttons.length;i++){
+
+            buttons[i].style.background="";
+            buttons[i].style.color="";
+
+            if(buttons[i].innerText.toLowerCase() ==
+               colorName.toLowerCase()){
+
+                buttons[i].style.background="black";
+                buttons[i].style.color="white";
+
+                document.getElementById("selectedColor").value =
+                    buttons[i].innerText;
+            }
+        }
     }
-        function selectSize(btn){
+
+    function selectSize(btn){
+
         var buttons = document.getElementsByClassName("sizeBtn");
 
         for(var i=0;i<buttons.length;i++){
-        buttons[i].style.background="";
-        buttons[i].style.color="";
-        }
-
-        btn.style.background="black";
-        btn.style.color="white";
-            document.getElementById("selectedSize").value = btn.innerText;
-
-        }
-        function selectColor(btn){
-
-        var buttons = document.getElementsByClassName("colorBtn");
-
-        for(var i=0;i<buttons.length;i++){
-        buttons[i].style.background="";
-        buttons[i].style.color="";
+            buttons[i].style.background="";
+            buttons[i].style.color="";
         }
 
         btn.style.background="black";
         btn.style.color="white";
 
-        document.getElementById("selectedColor").value = btn.innerText;
-
-        }
-                function buyNow() {
-
-            var size = document.getElementById("selectedSize").value;
-            var color = document.getElementById("selectedColor").value;
-            var qtyElement = document.getElementById("qty");
-
-            var qty = qtyElement ? qtyElement.value : 1;
-
-            // size/color select kakapothe stop (NO ALERT)
-            if (!size || !color) {
-                return;
-            }
-
-            var product = '@ViewBag.Product';
-            var price = '@ViewBag.Price';
-
-            var url = "/Home/BuyNow?product=" + encodeURIComponent(product) +
-                      "&price=" + encodeURIComponent(price) +
-                      "&size=" + encodeURIComponent(size) +
-                      "&color=" + encodeURIComponent(color) +
-                      "&qty=" + encodeURIComponent(qty);
-
-            window.location.href = url;
-        }
-        function validateSelection() {
-
-    var size = document.getElementById("selectedSize").value;
-    var color = document.getElementById("selectedColor").value;
-
-    if (!size || !color) {
-        alert("Please select Size and Color");
-        return false;
+        document.getElementById("selectedSize").value =
+            btn.innerText;
     }
 
-    return true;
-}
+    function selectColor(btn){
 
-</script>
+        var buttons =
+            document.getElementsByClassName("colorBtn");
 
+        for(var i=0;i<buttons.length;i++){
+            buttons[i].style.background="";
+            buttons[i].style.color="";
+        }
 
-        
+        btn.style.background="black";
+        btn.style.color="white";
+
+        document.getElementById("selectedColor").value =
+            btn.innerText;
+    }
+
+</script>     

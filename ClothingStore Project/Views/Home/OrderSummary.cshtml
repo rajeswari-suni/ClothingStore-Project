@@ -5,34 +5,36 @@
 @if (ViewBag.Products != null)
 {
         <!-- CART FLOW -->
-        <h3>Products:</h3>
+        <h3>Products Details:</h3>
+        @if (ViewBag.Products != null)
+        {
+            for (int i = 0; i < ViewBag.Products.Count; i++)
+            {
+                <p><b>Product:</b> @ViewBag.Products[i]</p>
+                <p><b>Price:</b> ₹@ViewBag.Prices[i]</p>
+                <p><b>Size:</b> @ViewBag.Sizes[i]</p>
+                <p><b>Color:</b> @ViewBag.Colors[i]</p>
+                <p><b>Qty:</b> @ViewBag.Qtys[i]</p>
 
-    @for (int i = 0; i < ViewBag.Products.Count; i++)
-    {
-            <p>
-                @ViewBag.Products[i] - ₹@ViewBag.Prices[i]
-                (Size: @ViewBag.Sizes[i], Color: @ViewBag.Colors[i])
-            </p>
-    }
+                <hr />
+            }
+        }
+               <hr />
 
-        <hr />
         <h3>Total: ₹@ViewBag.Total</h3>
 
-}
-else
-{
-        <!-- BUY NOW FLOW -->
-        <h3>Product Details:</h3>
+        <h4 style="color:green">
+            Discount : ₹@ViewBag.Discount
+        </h4>
 
-        <p>Product: @ViewBag.Product</p>
-        <p>Price: ₹@ViewBag.Price</p>
-        <p>Size: @ViewBag.Size</p>
-        <p>Color: @ViewBag.Color</p>
-        <p>Quantity: @ViewBag.Qty</p>
+        <h3 style="color:red">
+            Final Amount : ₹@ViewBag.FinalAmount
+        </h3>
 
-        <hr />
-        <h3>Total: ₹@(ViewBag.Price* ViewBag.Qty)</h3>
-}
+        //<h3>Debug Total: ₹@ViewBag.Debug</h3>//
+
+        }
+
       <!--Common delivery for both-->
     <p style="margin-top:10px;">
         Estimated Delivery:

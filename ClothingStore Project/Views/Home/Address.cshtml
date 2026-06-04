@@ -1,33 +1,93 @@
-﻿@{
+﻿@model ClothingStore_Project.Models.Address;
+@{
     ViewBag.Title = "Address";
 }
-
 <h2 style="text-align:center;">Enter Delivery Address</h2>
 
 <div style="width:50%; margin:auto;">
 
     <form action="/Home/Payment" method="post">
 
-        <input type="text" name="name" placeholder="Full Name" required class="form-control" />
+        <label>Full Name</label>
+        <input asp-for="Name"
+               placeholder="Full Name"
+               required class="form-control" />
         <br />
 
-        <input type="text" name="mobile" placeholder="Mobile Number" required class="form-control" />
+        <label>Phone Number</label>
+        <input asp-for="Mobile"
+               placeholder="Mobile Number"
+               required class="form-control" />
         <br />
 
-        <input type="text" name="address" placeholder="Address" required class="form-control" />
+        <label>House No / Building Name</label>
+        <input asp-for="DoorNumber"
+               placeholder="House No / Building Name"
+               required class="form-control" />
         <br />
 
-        <input type="text" name="city" placeholder="City" required class="form-control" />
+        <label>Road Name / Area / Colony</label>
+        <input asp-for="AddressLine"
+               placeholder="Road / Area / Colony"
+               required class="form-control" />
         <br />
 
-        <input type="text" name="landmark" placeholder="Landmark" required class="form-control" />
+        <label>City</label>
+
+        <input asp-for="City"
+               list="cities"
+               placeholder="City"
+               required class="form-control" />
+
+        <datalist id="cities">
+            <option value="Hyderabad"></option>
+            <option value="Vijayawada"></option>
+            <option value="Visakhapatnam"></option>
+            <option value="Warangal"></option>
+            <option value="Bangalore"></option>
+        </datalist>
+
         <br />
 
-        <input type="text" name="pincode" placeholder="Pincode" required class="form-control" />
+        <label>State</label>
+
+        <select asp-for="State"
+                required class="form-control">
+
+            <option value="">Select State</option>
+            <option>Telangana</option>
+            <option>Andhra Pradesh</option>
+            <option>Karnataka</option>
+            <option>Tamil Nadu</option>
+            <option>Kerala</option>
+
+        </select>
+
+        <br />
+
+        <label>Landmark (Optional)</label>
+
+        <input asp-for="Landmark"
+               placeholder="Landmark"
+               class="form-control" />
+
+        <br />
+
+        <label>Pincode</label>
+
+        <input asp-for="Pincode"
+               placeholder="Pincode"
+               required class="form-control" />
+
         <br />
 
         <div style="text-align:center;">
-            <button type="submit" class="btn btn-success">Continue to Payment</button>
+
+            <button type="submit"
+                    class="btn btn-success">
+                Continue To Payment
+            </button>
+
         </div>
 
     </form>

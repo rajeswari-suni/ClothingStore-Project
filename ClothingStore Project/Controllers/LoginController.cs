@@ -1,25 +1,105 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ClothingStore_Project.Controllers
 {
+   
     public class LoginController : Controller
     {
-        static List<string> cartProducts = new List<string>();
-        static List<int> cartPrices = new List<int>();
-        static List<string> cartSizes = new List<string>();
-        static List<string> cartColors = new List<string>();
-
+      
+            static List<string> cartProducts = new List<string>();
+            static List<int> cartPrices = new List<int>();
+            static List<string> cartSizes = new List<string>();
+            static List<string> cartColors = new List<string>();
+      
 
         public IActionResult Index()
+            {
+                return View();
+            }
+        [HttpPost]
+        public IActionResult Verify(string mobileNumber, string role)
         {
-            return View();
+            if (string.IsNullOrEmpty(role))
+                role = "";
+
+            if (string.IsNullOrEmpty(mobileNumber))
+                mobileNumber = "";
+
+            HttpContext.Session.SetString("Role", role);
+            HttpContext.Session.SetString("Mobile", mobileNumber);
+
+            return RedirectToAction("SendOTP",
+                new { mobileNumber = mobileNumber, role = role });
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> SendOTP(string mobileNumber, string role)
+        {
+            if (string.IsNullOrEmpty(role))
+            {
+                return Content("ROLL IS NULL");
+            }
+                HttpContext.Session.SetString("Role", role);
+                string otp = new Random().Next(1000, 9999).ToString();
+                HttpContext.Session.SetString("OTP", otp);
+                string apiKey = "e01bP5qRNnhA42ZFws9KOdxpVmv6yJfiaGjBMCQSrLgXlTHD7EDQwCX0n7AJh9Ta2NPuiWc5zRkdrOEe";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("authorization", apiKey);
+
+                    string url =
+                    $"https://www.fast2sms.com/dev/bulkV2?authorization={apiKey}&route=q&message=Clothing Store Login Code {otp}&language=english&flash=0&numbers={mobileNumber}";
+
+                    var response = await client.GetAsync(url);
+                    string result = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        HttpContext.Session.SetString("OTP", otp);
+                        ViewBag.MobileNumber = mobileNumber;
+                        return View("Verify");
+                    }
+                return Content("SMS Failed");
+                }
+            
         }
         [HttpPost]
-        public IActionResult Verify(string mobileNumber)
+        public IActionResult VerifyOTP(string userOtp)
         {
-            ViewBag.MobileNumber = mobileNumber;
-            return RedirectToAction("RoleSelection");
+            string? savedOtp = HttpContext.Session.GetString("OTP");
+            string? role = HttpContext.Session.GetString("Role");
+
+            if (userOtp == savedOtp)
+            {
+
+                if (role == "Seller")
+                {
+                    return RedirectToAction("Dashboard", "Seller");
+                }
+                else if (role == "Agent")
+                {
+                    HttpContext.Session.SetString("UserRole", "Agent");
+                    return RedirectToAction("AgentRegister", "Home");
+                }
+                else if (role == "Buyer")
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return RedirectToAction("Brands", "Login");
+                }
+            }
+            else
+            {
+                return Content("Invalid OTP");
+            }
         }
 
         public IActionResult RoleSelection()

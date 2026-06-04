@@ -1,0 +1,33 @@
+﻿@model ClothingStore_Project.Models.Product
+
+<h2>Edit Product</h2>
+
+<form asp-action="EditProduct" method="post">
+
+    <input type="hidden" asp-for="ProductId" />
+
+    <div class="mb-3">
+        <label>Product Name</label>
+        <input asp-for="ProductName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Price</label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Brand</label>
+        <input asp-for="Brand" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Image Url</label>
+        <input asp-for="ImageUrl" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Update Product
+    </button>
+
+</form>

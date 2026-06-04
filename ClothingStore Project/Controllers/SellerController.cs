@@ -71,5 +71,72 @@ namespace ClothingStore_Project.Controllers
 
             return View(seller);
         }
+        public IActionResult AddProduct(string brand)
+        {
+            ViewBag.Brand = brand;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddProduct(Product product)
+        {
+            _context.Products.Add(product);
+            _context.SaveChanges();
+
+            return RedirectToAction("ProductList");
+        }
+
+        public IActionResult ProductList()
+        {
+            var products = _context.Products.ToList();
+
+            return View(products);
+        }
+        public IActionResult EditProduct(int id)
+        {
+            var product = _context.Products.Find(id);
+
+            return View(product);
+        }
+
+        [HttpPost]
+        public IActionResult EditProduct(Product product)
+        {
+            _context.Products.Update(product);
+
+            _context.SaveChanges();
+
+            return RedirectToAction("ProductList");
+        }
+        public IActionResult DeleteProduct(int id)
+        {
+            var product = _context.Products.Find(id);
+
+            if (product == null)
+            {
+                return RedirectToAction("ProductList");
+            }
+
+            return View(product);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteProduct(Product product)
+        {
+            var data = _context.Products.Find(product.ProductId);
+
+            if (data != null)
+            {
+                _context.Products.Remove(data);
+
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("ProductList");
+        }
+        public IActionResult Dashboard() 
+        {
+            return View();
+        }
     }
 }

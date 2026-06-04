@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<ClothingStore_Project.Models.Product>
+@{
     var type = Context.Request.Query["type"].ToString();
 }
 <a href="/Login/Brands">⬅ Back to Brands</a>
@@ -16,54 +17,33 @@
         </div>
     }
 }
-<div style="display:flex; justify-content:center; gap:40px; margin-top:40px; align-items:flex-start;">
-    @if (type == "" || type == "tshirt")
-    {
-        <div style="text-align:center;">
-            <img src="https://www.pmlogos.com/wp-content/uploads/2023/06/Abstract-Tshirt-Print-Design-600x900.jpg" width="150" height="220" style="object-fit:cover;" />
-        <br />
-        T-Shirt
-        <br />
-        <a href="/Home/ProductDetails?product=T-Shirt&price=1200">View</a>
+
+    <div style="display:flex;flex-wrap:wrap;gap:30px;">
+
+        @foreach (var item in Model)
+        {
+            <div style="border:1px solid #ccc;
+                    padding:10px;
+                    width:220px;
+                    text-align:center;">
+
+                <img src="/images/@item.ImageUrl.Split(',')[0]"
+                     width="150"
+                     height="180" />
+
+                <br />
+
+                <h4>@item.ProductName</h4>
+
+                <p>₹ @item.Price</p>
+
+                <a href="/Home/ProductDetails?id=@item.ProductId">
+                    View
+                </a>
+
+            </div>
+        }
     </div>
-    }
-    @if (type == "" || type == "innerwear")
-
-    {
-
-        <div style="text-align:center;">
-            <img src="https://m.media-amazon.com/images/I/91S9IygwptL._AC_UY1100_.jpg" width="150"height="220" style="object-fit:cover;" />
-        <br />
-        Innerwear
-        <br />
-       <a href="/Home/ProductDetails?product=Innerwear&price=600">View</a>
-    </div>
-    }
-    @if (type == "" || type == "shorts")
-
-    {
-
-        <div style="text-align:center;">
-            <img src="https://images.meesho.com/images/products/617615038/sa1p0_512.webp?width=512" width="150" height="220" style="object-fit:cover;"  />
-        <br />
-        Shorts
-        <br />
-        <a href="/Home/ProductDetails?product=Shorts&price=900">View</a>
-    </div>
-    }
-    @if (type == "" || type == "banyan")
-
-    {
-
-        <div style="text-align:center;">
-            <img src="https://meninblueindia.com/cdn/shop/files/1_6ed1add9-d172-45b1-b9a6-a7d25c2298d1.jpg?v=1715583745" width="150" height="220" style="object-fit:cover;"  />
-        <br />
-        Banion
-        <br />
-        <a href="/Home/ProductDetails?product=Banyan&price=400">View</a>
-    </div>
-    }
-
 
 
 

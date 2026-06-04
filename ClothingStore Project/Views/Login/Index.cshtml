@@ -4,11 +4,23 @@
 
 <h2>Login With Mobile OTP</h2>
 
-<form method="post" action="/Login/Verify">
+<form method="get" action="/Login/SendOTP">
+
+    <label>Select Role</label>
+
+    <select class="form-control" name="role">
+        <option>Seller</option>
+        <option>Buyer</option>
+        <option>Agent</option>
+    </select>
+
+    <br />
 
     <div>
         <label>Mobile Number</label>
-        <input type="text" name="mobileNumber" placeholder="Enter Mobile Number" />
+        <input type="text"
+               name="mobileNumber"
+               placeholder="Enter Mobile Number" />
     </div>
 
     <br />

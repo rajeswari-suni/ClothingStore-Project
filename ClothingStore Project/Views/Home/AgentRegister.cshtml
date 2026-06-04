@@ -20,26 +20,73 @@
     <snap asp-validation-for="Phone" class="text-danger"></snap>
     <br />
 
-    <label>Agent Code</label>
-    <input type="text" asp-for="AgentCode" class="form-control" />
-    <snap asp-validation-for="AgentCode" class="text-danger"></snap>
-    <br />
+    <label>Subscription Amount</label>
 
-    <label>Membership Type</label>
-    <select asp-for="MembershipType" class="form-control">
-        <option>Gold</option>
-        <option>Silver</option>
-        <option>Platinum</option>
+    <select asp-for="SubscriptionAmount"
+            class="form-control"
+            id="amountDropdown">
+
+        <option value="">Select Amount</option>
+        <option value="5000">5000</option>
+        <option value="10000">10000</option>
+        <option value="15000">15000</option>
+
     </select>
     <br />
 
-    <label>Subscription Amount</label>
-    <input type="number" asp-for="SubscriptionAmount" class="form-control" />
+
+    <label>Membership Type</label>
+
+    <input asp-for="MembershipType"
+           class="form-control"
+           id="membership"
+           readonly />
+
+    <br />
+
+
+    <label>Discount Percentage</label>
+
+    <input type="number"
+           asp-for="DiscountPercentage"
+           class="form-control"
+           id="discount"
+           readonly />
+
     <br />
 
     <button type="submit" class="btn btn-primary">
         Register
     </button>
+    
+    <script>
+
+        document.getElementById("amountDropdown")
+        .addEventListener("change", function () {
+
+            var amount = this.value;
+
+            if (amount == "5000")
+            {
+                document.getElementById("membership").value = "Gold";
+                document.getElementById("discount").value = 30;
+            }
+
+            else if (amount == "10000")
+            {
+                document.getElementById("membership").value = "Platinum";
+                document.getElementById("discount").value = 50;
+            }
+
+            else if (amount == "15000")
+            {
+                document.getElementById("membership").value = "Diamond";
+                document.getElementById("discount").value = 70;
+            }
+
+        });
+
+    </script>
 
 </form>
 

@@ -11,6 +11,7 @@
             <th>Agent Code</th>
             <th>Membership</th>
             <th>Amount</th>
+            <th>Discount</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -25,6 +26,7 @@
                 <td>@item.AgentCode</td>
                 <td>@item.MembershipType</td>
                 <td>@item.SubscriptionAmount</td>
+                <td>@item.DiscountPercentage</td>
                 <td>
                     <a href="/Home/EditAgent/@item.Id"
                        class="btn btn-primary">
