@@ -1,0 +1,22 @@
+﻿CREATE TABLE Addresses
+(
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+
+    UserMobile NVARCHAR(15) NOT NULL,
+
+    Name NVARCHAR(100) NOT NULL,
+
+    Mobile NVARCHAR(15) NOT NULL,
+
+    DoorNumber NVARCHAR(100) NOT NULL,
+
+    AddressLine NVARCHAR(300) NOT NULL,
+
+    City NVARCHAR(100) NOT NULL,
+
+    State NVARCHAR(100) NOT NULL,
+
+    Landmark NVARCHAR(200) NULL,
+
+    Pincode NVARCHAR(10) NOT NULL
+);

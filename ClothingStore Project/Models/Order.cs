@@ -19,5 +19,12 @@ namespace ClothingStore_Project.Models
         public string? BuyerName { get; set; }
 
         public DateTime OrderDate { get; set; }
+        public string? Status { get; set; }="Placed";
+
+        public bool IsReviewed { get; set; } = false;
+
+        public string? CustomerType { get; set; }
+        public string? UserMobile { get; set; }
+
     }
 }

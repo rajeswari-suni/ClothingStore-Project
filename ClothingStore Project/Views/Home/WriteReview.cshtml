@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "Write Review";
+}
+<style>
+    .star {
+        font-size: 40px;
+        cursor: pointer;
+        color: gold;
+    }
+</style>
+
+<h2>Write Review</h2>
+<form method="post" action="/Home/WriteReview">
+
+    <input type="hidden" name="productName" value="@ViewBag.ProductName" />
+
+    <label>Rating</label>
+
+    <input type="hidden" name="stars" id="stars" value="5" />
+
+    <div style="font-size:35px;">
+        <span class="star" onclick="setRating(1)">☆</span>
+        <span class="star" onclick="setRating(2)">☆</span>
+        <span class="star" onclick="setRating(3)">☆</span>
+        <span class="star" onclick="setRating(4)">☆</span>
+        <span class="star" onclick="setRating(5)">☆</span>
+    </div>
+
+    <br />
+
+    <label>Review</label>
+    <textarea name="review" class="form-control"></textarea>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">
+        Submit Review
+    </button>
+
+</form>
+
+<script>
+    function setRating(rating)
+    {
+        document.getElementById("stars").value = rating;
+
+        let stars = document.getElementsByClassName("star");
+
+        for(let i = 0; i < stars.length; i++)
+        {
+            stars[i].innerHTML = i < rating ? "★" : "☆";
+        }
+    }
+
+    setRating(5);
+</script>

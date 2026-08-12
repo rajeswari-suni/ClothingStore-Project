@@ -33,10 +33,11 @@
 
 </div>
       <h3>@Model.ProductName</h3>
-      <h4>₹ @Model.Price</h4>
+      <h4>₹ @Model.Price</h4>ce
       
       <p style="color:green;font-weight:bold;">
-          ⭐ 4.5 (120 Reviews)
+    ⭐ @ViewBag.AvgRating.ToString("0.0")
+    (@ViewBag.TotalReviews Reviews)
       </p>
 
       <p>
@@ -46,6 +47,7 @@
       <p style="width:400px;">
           @Model.Description
       </p>
+<hr />
 
   @if (Model.Quantity == 0)
   {
@@ -81,6 +83,7 @@
 
 <br />
 <br />
+
 <form method="post" asp-action="BuyNow" asp-controller="Home">
 
     <input type="hidden" name="product" value="@Model.ProductName" />
@@ -96,21 +99,30 @@
         Estimated Delivery:
         @{
             var deliveryDate = DateTime.Now.AddDays(5);
+
         }
         @deliveryDate.ToString("dd MMM yyyy")
+    </p>
+    <p style="color:green;font-weight:bold;">
+        <i class="bi bi-truck"></i> Free Delivery
+    </p>
+
+    <p style="color:#007185;">
+        <i class="bi bi-shield-check"></i> Secure Payment
     </p>
 
     <br />
 
+
     @if (Model.Quantity == 0)
     {
         <button disabled
-                style="padding:10px 20px; background-color:gray; color:white;">
+                style="padding:10px 20px; background-color:gray; color:white;"><i class="bi bi-cart-x-fill"></i>
             Add To Cart
         </button>
 
         <button disabled
-                style="padding:10px 20px; background-color:gray; color:white; margin-left:10px;">
+                style="padding:10px 20px; background-color:gray; color:white; margin-left:10px;"><i class="bi bi-lightning-charge-fill"></i>
             Buy Now
         </button>
     }
@@ -118,18 +130,61 @@
     {
         <button type="submit"
                 formaction="/Home/AddToCart"
-                style="padding:10px 20px; background-color:blue; color:white;">
-            Add To Cart
+                style="padding:12px 25px;
+                   background-color:#FF9900;
+                   color:white;
+                   border:none;
+                   border-radius:8px;
+                   font-weight:bold;">
+            <i class="bi bi-cart-plus-fill"></i> Add To Cart
         </button>
 
         <button type="submit"
                 formaction="/Home/BuyNow"
-                style="padding:10px 20px; background-color:blue; color:white; margin-left:10px;">
-            Buy Now
+                style="padding:12px 25px;
+                   background-color:#FFD814;
+                   color:black;
+                   border:none;
+                   border-radius:8px;
+                   margin-left:10px;
+                   font-weight:bold;">
+            <i class="bi bi-lightning-charge-fill"></i> Buy Now
         </button>
     }
     </form>
 
+    <hr />
+
+    <h3>Customer Ratings & Reviews</h3>
+
+@if (ViewBag.Reviews != null)
+{
+    foreach (var review in ViewBag.Reviews)
+    {
+        <div style="border-bottom:1px solid lightgray;padding:10px;">
+
+            <b>@review.UserName</b>
+
+            <span style="color:gray;font-size:12px;">
+                @review.ReviewDate?.ToString("dd MMM yyyy")
+            </span>
+
+            <br />
+
+            <span style="color:gold;font-size:18px;">
+                ★
+            </span>
+
+            @review.Stars / 5
+
+            <br /><br />
+
+            @review.Review
+
+        </div>
+    }
+}
+       
 <script>
 
         function changeImage(img){

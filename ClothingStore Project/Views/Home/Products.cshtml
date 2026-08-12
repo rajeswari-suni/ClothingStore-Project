@@ -2,11 +2,7 @@
 @{
     var type = Context.Request.Query["type"].ToString();
 }
-<a href="/Login/Brands">⬅ Back to Brands</a>
-
 <h2 style="text-align:center;">@ViewBag.Brand Products</h2>
-
-
 
 @if (ViewBag.Products != null)
 {
@@ -26,10 +22,9 @@
                     padding:10px;
                     width:220px;
                     text-align:center;">
-
-                <img src="/images/@item.ImageUrl.Split(',')[0]"
-                     width="150"
-                     height="180" />
+            <img src="/images/@item.ImageUrl.Split(',')[0]"
+            width="150"
+                 height="180" />
 
                 <br />
 

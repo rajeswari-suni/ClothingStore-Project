@@ -2,28 +2,55 @@
 
 <h2 style="text-align:center;">My Orders</h2>
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Product</th>
-            <th>Price</th>
-            <th>Size</th>
-            <th>Color</th>
-            <th>Quantity</th>
-            <th>Order Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
+@foreach (var item in Model)
+{
+    <div style="
+        border:1px solid #ddd;
+        border-radius:10px;
+        padding:15px;
+        margin-bottom:15px;
+        background:white;
+        box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+
+        <h4>@item.ProductName</h4>
+
+        <p>
+            <b>Price:</b> ₹@item.Price
+            &nbsp;&nbsp;
+            <b>Size:</b> @item.Size
+            &nbsp;&nbsp;
+            <b>Qty:</b> @item.Quantity
+        </p>
+
+        <p>
+            <b>Color:</b> @item.Color
+        </p>
+
+        <p>
+            <b>Status:</b>
+            <span style="color:green;">
+                @item.Status
+            </span>
+        </p>
+
+        <p>
+            <b>Order Date:</b>
+            @item.OrderDate.ToString("dd MMM yyyy")
+        </p>
+
+        @if (item.IsReviewed)
         {
-            <tr>
-                <td>@item.ProductName</td>
-                <td>₹ @item.Price</td>
-                <td>@item.Size</td>
-                <td>@item.Color</td>
-                <td>@item.Quantity</td>
-                <td>@item.OrderDate.ToString("dd-MMM-YYYY")</td>
-            </tr>
+            <button class="btn btn-success" disabled>
+                Review Submitted
+            </button>
         }
-    </tbody>
-</table>
+        else
+        {
+            <a href="/Home/WriteReview?productName=@item.ProductName"
+               class="btn btn-primary">
+                Write Review
+            </a>
+        }
+
+    </div>
+}

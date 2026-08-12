@@ -2,16 +2,22 @@
 
 namespace ClothingStore_Project.Models
 {
-    public class StoreDbContext(DbContextOptions<StoreDbContext> options) : DbContext(options)
+    public class StoreDbContext : DbContext
     {
-        public  DbSet<Product> Products { get; set; }
-        public  DbSet<Order> Orders { get; set; }
-        public DbSet<Rating> Ratings { get; set; }
-        public  DbSet<Seller> Sellers  { get; set; }
-        public  DbSet<Agent> Agents { get; set; }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public StoreDbContext(DbContextOptions<StoreDbContext> options)
+            : base(options)
         {
-            modelBuilder.Entity<Product>();
         }
+
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<Rating> Ratings { get; set; }
+
+        public DbSet<Seller> Sellers { get; set; }
+
+        public DbSet<Agent> Agents { get; set; }
+        public DbSet<AddressDetails> Addresses { get; set; }
     }
 }

@@ -44,8 +44,17 @@ namespace ClothingStore_Project.Controllers
             {
                 return Content("ROLL IS NULL");
             }
+            if(string.IsNullOrEmpty(mobileNumber))
+            {
+                mobileNumber = "";
+            }
                 HttpContext.Session.SetString("Role", role);
-                string otp = new Random().Next(1000, 9999).ToString();
+
+             HttpContext.Session.SetString("Moblile", mobileNumber);
+
+             HttpContext.Session.SetString("UserName", mobileNumber);
+
+             string otp = new Random().Next(1000, 9999).ToString();
                 HttpContext.Session.SetString("OTP", otp);
                 string apiKey = "e01bP5qRNnhA42ZFws9KOdxpVmv6yJfiaGjBMCQSrLgXlTHD7EDQwCX0n7AJh9Ta2NPuiWc5zRkdrOEe";
 
@@ -57,16 +66,19 @@ namespace ClothingStore_Project.Controllers
                     $"https://www.fast2sms.com/dev/bulkV2?authorization={apiKey}&route=q&message=Clothing Store Login Code {otp}&language=english&flash=0&numbers={mobileNumber}";
 
                     var response = await client.GetAsync(url);
-                    string result = await response.Content.ReadAsStringAsync();
+                    //string result = await response.Content.ReadAsStringAsync();//
+                    // return Content(result);//
 
                     if (response.IsSuccessStatusCode)
                     {
-                        HttpContext.Session.SetString("OTP", otp);
-                        ViewBag.MobileNumber = mobileNumber;
-                        return View("Verify");
+                      HttpContext.Session.SetString("OTP", otp);
+                       ViewBag.MobileNumber = mobileNumber;
+                    return View("Verify");
                     }
-                return Content("SMS Failed");
-                }
+                   return Content("SMS Failed");
+                   
+
+            }
             
         }
         [HttpPost]
@@ -80,6 +92,7 @@ namespace ClothingStore_Project.Controllers
 
                 if (role == "Seller")
                 {
+                    HttpContext.Session.SetString("UserRole", "Seller");
                     return RedirectToAction("Dashboard", "Seller");
                 }
                 else if (role == "Agent")
@@ -89,6 +102,7 @@ namespace ClothingStore_Project.Controllers
                 }
                 else if (role == "Buyer")
                 {
+                    HttpContext.Session.SetString("UserRole", "Buyer");
                     return RedirectToAction("Index", "Home");
                 }
                 else

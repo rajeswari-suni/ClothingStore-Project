@@ -134,9 +134,48 @@ namespace ClothingStore_Project.Controllers
 
             return RedirectToAction("ProductList");
         }
-        public IActionResult Dashboard() 
+        public IActionResult Dashboard()
         {
+            if (HttpContext.Session.GetString("UserRole") != "Seller")
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
             return View();
+        }
+        public IActionResult ViewOrders()
+        {
+            var orders = _context.Orders.ToList();
+            return View(orders);
+        }
+        public IActionResult ShipOrder(int id)
+        {
+            var order = _context.Orders.Find(id);
+
+            if (order != null)
+            {
+                order.Status = "Shipped";
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("ViewOrders");
+        }
+        public IActionResult DeliverOrder(int id)
+        {
+            var order = _context.Orders.Find(id);
+
+            if (order != null)
+            {
+                order.Status = "Delivered";
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("ViewOrders");
+        }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

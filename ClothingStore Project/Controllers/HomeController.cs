@@ -1,6 +1,11 @@
-using System.Diagnostics;
 using ClothingStore_Project.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
+using System.Diagnostics;
+using System.IO.Compression;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Collections.Specialized.BitVector32;
 
 namespace ClothingStore_Project.Controllers
 {
@@ -24,46 +29,68 @@ namespace ClothingStore_Project.Controllers
         {
             return View();
         }
-        /* public IActionResult Products(string type)
+                 public IActionResult Products(string type)
          {
              ViewBag.Type = type;
 
-             if (type == "tshirt")
-             {
-                 ViewBag.Products = new List<string> { "Red T-Shirt", "Blue T-Shirt", "Black T-Shirt" };
-             }
-             else if (type == "innerwear")
-             {
-                 ViewBag.Products = new List<string> { "Cotton Innerwear", "Sports Innerwear" };
-             }
-             else if (type == "shorts")
-             {
-                 ViewBag.Products = new List<string> { "Black Shorts", "Gym Shorts" };
-             }
-             else if (type == "banyan")
-             {
-                 ViewBag.Products = new List<string> { "White Banyan", "Black Banyan" };
-             }
+             var products = _context.Products.ToList();
 
-             return View();
-         }*/
-        public IActionResult Products(string type)
-        {
-            ViewBag.Type = type;
-
-            var products = _context.Products.ToList();
-
-            if (!string.IsNullOrEmpty(type))
+            if (!string.IsNullOrWhiteSpace(type))
             {
-                products = products
-                    .Where(x => x.ProductName.ToLower().Contains(type.ToLower()))
-                    .ToList();
+                string search = type.ToLower()
+                                    .Replace("-", "")
+                                    .Replace(" ", "")
+                                    .Trim();
+
+                if (search.EndsWith("s"))
+                {
+                    search = search.Substring(0, search.Length - 1);
+                }
+
+                products = products.Where(x =>
+                {
+                    string product = x.ProductName.ToLower()
+                                                  .Replace("-", "")
+                                                  .Replace(" ", "")
+                                                  .Trim();
+
+                    if (product.EndsWith("s"))
+                    {
+                        product = product.Substring(0, product.Length - 1);
+                    }
+
+                    return product.Contains(search)
+                        || search.Contains(product)
+                        || product.StartsWith(search);
+                }).ToList();
             }
 
             return View(products);
-        }
+         }
+      
 
-        public IActionResult Privacy()
+        public IActionResult Privacy ()
+        {
+            return View();
+        }
+        public IActionResult Brands()
+        {
+            return View();
+        }
+              
+        public IActionResult About ()
+        {
+            return View();
+        }
+        public IActionResult Contact ()
+        {
+            return View();
+        }
+        public IActionResult Terms ()
+        {
+            return View();
+        }
+        public IActionResult OrderList()
         {
             return View();
         }
@@ -76,8 +103,25 @@ namespace ClothingStore_Project.Controllers
                 return RedirectToAction("Products");
             }
 
+            ViewBag.AvgRating = _context.Ratings
+                .Where(r => r.ProductName == product.ProductName)
+                .Average(r => (double?)r.Stars) ?? 0;
+
+            ViewBag.TotalReviews = _context.Ratings
+                .Count(r => r.ProductName == product.ProductName);
+            ViewBag.Reviews = _context.Ratings
+    .Where(r => r.ProductName == product.ProductName)
+    .OrderByDescending(r => r.Id)
+    .ToList();
+
             return View(product);
         }
+        public IActionResult Review(string productName)
+        {
+            ViewBag.ProductName = productName;
+            return View();
+        }
+
         public IActionResult AddToCart(string product, int price, string size, string color, int qty)
         {
           
@@ -104,19 +148,6 @@ namespace ClothingStore_Project.Controllers
             {
                 total += Convert.ToInt32(cartPrices[i]) * cartQtys[i];
             }
-
-            /* if (total >= 3000 && total < 5000)
-             {
-                 discount = total * 5 / 100;
-             }
-             else if (total >= 5000 && total < 10000)
-             {
-                 discount = total * 10 / 100;
-             }
-             else if (total >= 10000)
-             {
-                 discount = total * 15 / 100;
-             }*/
 
             int discount = 0;
 
@@ -191,21 +222,6 @@ namespace ClothingStore_Project.Controllers
                 total += Convert.ToInt32(cartPrices[i]) * cartQtys[i];
             }
 
-            /*int discount = 0;
-
-            if (total >= 3000 && total < 5000)
-            {
-                discount = total * 5 / 100;
-            }
-            else if (total >= 5000 && total < 10000)
-            {
-                discount = total * 10 / 100;
-            }
-            else if (total >= 10000)
-            {
-                discount = total * 15 / 100;
-            }*/
-
             int discount = 0;
 
             string role = HttpContext.Session.GetString("UserRole") ?? "";
@@ -238,21 +254,89 @@ namespace ClothingStore_Project.Controllers
             return View();
         }
 
-        /*public IActionResult Payment()
-        {
-            return View();
-        }*/
         [HttpPost]
         public IActionResult Payment(Address address)
         {
-            buyerName = address.Name;
+            buyerName = address.Name??"";
+            HttpContext.Session.SetString("DeliveryMobile", address.Mobile ?? "");
+            AddressDetails data = new AddressDetails();
 
+            data.UserMobile = HttpContext.Session.GetString("UserName") ?? "";
+            data.Name = address.Name ?? "";
+            data.Mobile = address.Mobile ?? "";
+            data.DoorNumber = address.DoorNumber ?? "";
+            data.AddressLine = address.AddressLine ?? "";
+            data.City = address.City ?? "";
+            data.State = address.State ?? "";
+            data.Landmark = address.Landmark;
+            data.Pincode = address.Pincode ?? "";
+
+            _context.Addresses.Add(data);
+            _context.SaveChanges();
             return View();
+        }
+        public IActionResult SavedAddresses()
+        {
+            string? mobile = HttpContext.Session.GetString("DeliveryMobile");
+
+            var address = _context.Addresses
+                .FirstOrDefault(a => a.UserMobile == mobile);
+
+            if (address == null)
+            {
+                return RedirectToAction("Address");
+            }
+
+            return View(address);
+        }
+        public IActionResult EditAddress()
+        {
+            string? mobile = HttpContext.Session.GetString("DeliveryMobile");
+
+            var address = _context.Addresses
+                .FirstOrDefault(x => x.UserMobile == mobile);
+
+            return View(address);
+        }
+        [HttpPost]
+        public IActionResult EditAddress(AddressDetails model)
+        {
+            var address = _context.Addresses.Find(model.Id);
+
+            if (address != null)
+            {
+                address.Name = model.Name;
+                address.Mobile = model.Mobile;
+                address.DoorNumber = model.DoorNumber;
+                address.AddressLine = model.AddressLine;
+                address.City = model.City;
+                address.State = model.State;
+                address.Landmark = model.Landmark;
+                address.Pincode = model.Pincode;
+
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("SavedAddresses");
+        }
+        public IActionResult DeleteAddress()
+        {
+            string? mobile = HttpContext.Session.GetString("DeliveryMobile");
+
+            var address = _context.Addresses
+                .FirstOrDefault(x => x.UserMobile == mobile);
+
+            if (address != null)
+            {
+                _context.Addresses.Remove(address);
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Address");
         }
         public IActionResult BuyNow(string product, int price, string size, string color, int qty)
         {
             
-            Console.WriteLine($"Product={product},Price={price},Qty={qty}");
             cartProducts.Clear();
             cartPrices.Clear();
             cartSizes.Clear();
@@ -314,6 +398,19 @@ namespace ClothingStore_Project.Controllers
                 order.Quantity = cartQtys[0];
                 order.BuyerName = buyerName;
                 order.OrderDate = DateTime.Now;
+                order.Status = "Placed";
+
+                string? role = HttpContext.Session.GetString("UserRole");
+
+                if (role == "Agent")
+                {
+                    order.CustomerType = "Agent";
+                }
+                else
+                {
+                    order.CustomerType = "Buyer";
+                }
+                order.UserMobile = HttpContext.Session.GetString("DeliveryMobile");
 
                 _context.Orders.Add(order);
                 _context.SaveChanges();
@@ -332,17 +429,22 @@ namespace ClothingStore_Project.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult SaveRating(string productName, int stars)
+        public IActionResult SaveRating(string productName, int stars, string review)
         {
             Rating rating = new Rating();
 
             rating.ProductName = productName;
             rating.Stars = stars;
 
+            rating.UserName = HttpContext.Session.GetString("UserName")??"Customer";
+
+            rating.Review = review;
+
             _context.Ratings.Add(rating);
             _context.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("ProductDetails",
+                new { id = Request.Form["productId"] });
         }
         public IActionResult AgentList()
         {
@@ -390,12 +492,64 @@ namespace ClothingStore_Project.Controllers
 
             return View(agent);
         }
+        /* public IActionResult MyOrders()
+         {
+             var orders = _context.Orders.ToList();
+
+             return View(orders);
+         }*/
         public IActionResult MyOrders()
         {
-            var orders = _context.Orders.ToList();
+            var mobile = HttpContext.Session.GetString("DeliveryMobile");
+
+            var orders = _context.Orders
+                .Where(o => o.UserMobile == mobile)
+                .OrderByDescending(o => o.OrderDate)
+                .ToList();
 
             return View(orders);
         }
+
+        public IActionResult MyAccount()
+        {
+            return View();
+        }
+
+        public IActionResult WriteReview(string productName)
+        {
+            ViewBag.ProductName = productName;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult WriteReview(string productName, int stars, string review)
+        {
+            var buyerName = _context.Orders
+             .Where(o => o.ProductName == productName)
+             .Select(o => o.BuyerName)
+             .FirstOrDefault();
+
+            var rating = new Rating
+            {
+                ProductName = productName,
+                Stars = stars,
+                UserName = buyerName,
+                Review = review,
+                ReviewDate=DateTime.Now
+            };
+            var order = _context.Orders
+    .FirstOrDefault(o => o.ProductName == productName && o.BuyerName == buyerName);
+
+            if (order != null)
+            {
+                order.IsReviewed = true;
+            }
+
+            _context.Ratings.Add(rating);
+            _context.SaveChanges();
+
+            return RedirectToAction("MyOrders");
+        }
+      
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -404,7 +558,7 @@ namespace ClothingStore_Project.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Home");
         }
         public IActionResult AgentRegister()
         {
@@ -416,12 +570,16 @@ namespace ClothingStore_Project.Controllers
         public IActionResult AgentRegister(Agent agent)
         {
             agent.AgentCode = "AG" + new Random().Next(1000, 9999);
+            agent.SubscriptionStart = DateTime.Now;
+            agent.SubscriptionEnd = DateTime.Now.AddMonths(1);
+            agent.IsActive = true;
+
             HttpContext.Session.SetInt32("AgentDiscount", agent.DiscountPercentage);
 
             _context.Agents.Add(agent);
             _context.SaveChanges();           
 
-            return RedirectToAction("Products","Home");
+            return RedirectToAction("Index","Home");
         }
         
     }

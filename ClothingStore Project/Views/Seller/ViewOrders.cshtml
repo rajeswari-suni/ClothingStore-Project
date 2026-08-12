@@ -1,0 +1,45 @@
+﻿@model List<ClothingStore_Project.Models.Order>
+
+<h2>View Orders</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Product</th>
+        <th>Customer Name</th>
+        <th>Customer Type</th>
+        <th>Quantity</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ProductName</td>
+            <td>@item.BuyerName</td>
+            <td>@item.CustomerType</td>
+            <td>@item.Quantity</td>
+            <td>@item.Status</td>
+            <td>
+        @if (item.Status == "Placed")
+{
+    <a href="/Seller/ShipOrder/@item.Id">Ship</a>
+}
+else if (item.Status == "Shipped")
+{
+    <a href="/Seller/DeliverOrder/@item.Id">Deliver</a>
+}
+else
+{
+    <span>Delivered</span>
+}
+    </td>
+        </tr>
+    }
+</table>
+<br />
+<div style="text-align:center;">
+    <a href="/Seller/Dashboard" class="btn btn-primary">
+        ← Back to Dashboard
+    </a>
+</div>

@@ -1,4 +1,5 @@
-﻿<style>
+﻿@using Microsoft.AspNetCore.Http
+<style>
     body {
         margin: 0;
         font-family: Arial;
@@ -18,10 +19,10 @@
 
     /* Page Border */
     .page-container {
-        border: 5px solid black;
-        margin: 10px;
-        border-radius: 15px;
-        overflow: hidden;
+        margin: 10px auto;
+        max-width: 1200px;
+        border: none;
+        border-radius: 0;
     }
 
     /* Navbar */
@@ -53,10 +54,17 @@
 
     /* Hero */
     .hero {
-        background: linear-gradient(to right, #4facfe, #00f2fe);
+        width: 100%;
+        min-height: 450px;
+        padding: 50px 20px;
         text-align: center;
-        padding: 40px;
+        background: linear-gradient(to bottom,#2d8cff,#8fd3ff,#dff4ff);
         color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
     }
 
         .hero h1 {
@@ -71,8 +79,9 @@
     #slider {
         width: 200px;
         height: 200px;
+        object-fit:cover;
         border-radius: 10px;
-        margin-top: 10px;
+        margin-top: 20px 0;
     }
 
     /* Button */
@@ -101,19 +110,16 @@
         flex-wrap: wrap;
     }
 
-    .brand-box {
-        background: #f06292;
-        color: white;
-        padding: 15px 25px;
-        border-radius: 10px;
-        font-weight: bold;
-        transition: 0.3s;
-        cursor: pointer;
+    .brand-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+        transition: .3s;
     }
 
-        .brand-box:hover {
-            background: #d81b60;
-            transform: scale(1.1);
+        .brand-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0,0,0,.2);
         }
 
     /* Products */
@@ -153,40 +159,60 @@
             }
 </style>
 
-<div class="page-container">
+        <div class="page-container">
 
     <!-- NAVBAR -->
     <div class="navbar">
 
         <div style="display:flex; align-items:center; gap:15px;">
-            <b>MyShop 🛍️</b>
+            <b><i class="bi bi-shop"></i>MyShop 🛍️</b>
             <form method="get" action="/Home/Products">
-                <input type="text" name="type" class="search-box" placeholder="Search products..." />
-                <button type="submit">Search</button>
+                <input type="text" name="type" class="search-box" placeholder="Search products..." />               
             </form>
         </div>
 
         <div>
-            <a href="/Home/Index">Home</a>
-            <a href="/Home/Products">Products</a>
-            <a href="/Home/Cart">Cart</a>
-            <a href="/Home/MyOrders">MyOrders</a>
-            <a href="/Home/Logout">Logout</a>
+            <a href="/Home/Index"><i class="bi bi-house-fill"></i>Home</a>
+            <a href="/Home/Products"><i class="bi bi-bag-fill"></i>Products</a>
 
+    @{
+        var role = Context.Session.GetString("UserRole");
+    }
+
+    @if (role == "Buyer" || role == "Agent")
+    {
+        <a href="/Home/Cart"><i class="bi bi-cart-fill"></i>Cart</a>
+        <a href="/Home/MyOrders"><i class="bi bi-box-seam-fill"></i>My Orders</a>
+        <a href="/Home/MyAccount"><i class="bi bi-person-circle"></i>My Account</a>
+        <a href="/Seller/Logout"><i class="bi bi-arrow-right"></i>Logout</a>
+    }
+    else if (role == "Seller")
+    {
+        <a href="/Seller/Dashboard"><i class="bi bi-speedometer2"></i>Dashboard</a>
+        <a href="/Home/Logout"><i class="bi bi-arrow-right"></i>Logout
+
+        </a>
+    }
+    else
+    {
+        <a href="/Login"><i class="bi bi-box-arrow-in-right"></i>Login
+    
+        </a>
+    }
         </div>
-
-    </div>
-
-    <!-- HERO -->
+        </div>
+ 
+        <!-- HERO -->
     <div class="hero">
         <h1>Welcome to Fashion Store</h1>
-        <p>Best Brands | Best Prices</p>
+        <p><i class="bi bi-patch-check-fill"></i>Best Brands &nbsp;|&nbsp;<i class="bi bi-tags-fill"></i> Best Prices</p>
 
         <img id="slider" src="/images/red-tshirt.jpg" />
 
         <br />
 
-        <a href="/Home/Products" class="btn">Shop Now</a>
+    <a href="/Home/Products" class="btn"><i class="bi bi-bag-fill"></i>Shop Now</a>
+    </div>
     </div>
 
     <!-- SLIDER SCRIPT -->
@@ -206,50 +232,177 @@
         }, 2000);
     </script>
 
-    <!-- BRANDS -->
-    <div style="text-align:center;">
-        <h2>Top Brands</h2>
+<!-- BRANDS -->
+
+<h2 class="section-title"><i class="bi bi-stars"></i>
+    Top Brands
+    </h2>
+
+
+<div class="brand-container">
+
+    <div class="brand-box">
+        <a href="/Home/Brands?brand=Nike" class="brand-card">
+            <img src="~/images/brands/Nike.png" />
+        </a>
+        <p class="brand-name">Nike</p>
     </div>
 
-    <div class="brands">
-        <div class="brand-box">Nike</div>
-        <div class="brand-box">Puma</div>
-        <div class="brand-box">Adidas</div>
-        <div class="brand-box">Levis</div>
-        <div class="brand-box">Jockey</div>
+    <div class="brand-box">
+        <a href="/Home/Brands?brand=Puma" class="brand-card">
+            <img src="~/images/brands/Puma.png" />
+        </a>
+        <p class="brand-name">Puma</p>
     </div>
 
-    <!-- PRODUCTS -->
+    <div class="brand-box">
+        <a href="/Home/Brands?brand=Adidas" class="brand-card">
+            <img src="~/images/brands/Adidas.png" />
+        </a>
+        <p class="brand-name">Adidas</p>
+    </div>
+
+    <div class="brand-box">
+        <a href="/Home/Brands?brand=Levis" class="brand-card">
+            <img src="~/images/brands/Levis.png" />
+        </a>
+        <p class="brand-name">Levi's</p>
+    </div>
+
+    <div class="brand-box">
+        <a href="/Home/Brands?brand=Jockey" class="brand-card">
+            <img src="~/images/brands/Jockey.png" />
+        </a>
+        <p class="brand-name">Jockey</p>
+    </div>
+
+    <div class="brand-box">
+        <a href="/Home/Brands?brand=USPolo" class="brand-card">
+            <img src="~/images/brands/USPolo.png" />
+        </a>
+        <p class="brand-name">US Polo</p>
+    </div>
+
+    <div class="brand-box">
+        <a href="/Home/Brands?brand=AllenSolly" class="brand-card">
+            <img src="~/images/brands/AllenSolly.png" />
+        </a>
+        <p class="brand-name">Allen Solly</p>
+    </div>
+
+    <div class="brand-box">
+        <a href="/Home/Brands?brand=PeterEngland" class="brand-card">
+            <img src="~/images/brands/PeterEngland.png" />
+        </a>
+        <p class="brand-name">Peter England</p>
+    </div>
+
+    <div class="brand-box">
+        <a href="/Home/Brands?brand=VanHeusen" class="brand-card">
+            <img src="~/images/brands/VanHeusen.png" />
+        </a>
+        <p class="brand-name">Van Heusen</p>
+    </div>
+
+    <div class="brand-box">
+        <a href="/Home/Brands?brand=LouisPhilippe" class="brand-card">
+            <img src="~/images/brands/LouisPhilippe.png" />
+        </a>
+        <p class="brand-name">Louis Philippe</p>
+    </div>
+
+</div>
+
+<h2 class="section-title"><i class="bi bi-bag-heart-fill"></i>
+    Other Brands
+</h2>
+
+<div class="brand-tags">
+
+    <span>Campus</span>
+    <span>Sparx</span>
+    <span>Bata</span>
+    <span>Red Tape</span>
+    <span>Woodland</span>
+    <span>HPX</span>
+    <span>Roadster</span>
+    <span>Max</span>
+    <span>Zudio</span>
+    <span>Trends</span>
+    <span>EasyBuy</span>
+    <span>Duke</span>
+    <span>Killer</span>
+    <span>Mufti</span>
+    <span>Flying Machine</span>
+    <span>Lee</span>
+    <span>Wrangler</span>
+
+</div>
+
+<!-- PRODUCTS -->
+<style>
+    .card h3 {
+        color: #222 !important;
+        font-size: 28px !important;
+        display: block !important;
+        visibility: visible !important;
+    }
+
+    .card p {
+        color: #444 !important;
+    }
+
+    .card .product-desc {
+        color: #777 !important;
+    }
+</style>
     <div class="products">
 
-        <div class="card">
+       <div class="card">
             <img src="/images/red-tshirt.jpg" />
             <h3>T-Shirts</h3>
+        <p class="product-desc">Premium Quality Cotton Wear</p>
             <p>Starting ₹499</p>
-            <a href="/Home/Products?type=tshirt" class="btn">View</a>
+            <a href="/Home/Products?type=T-shirt" class="btn">View</a>
         </div>
 
         <div class="card">
             <img src="/images/Black-Innerwear.jpg" />
             <h3>Innerwear</h3>
+        <p class="product-desc">Soft & Comfortable Innerwear</p>
             <p>Starting ₹299</p>
             <a href="/Home/Products?type=innerwear" class="btn">View</a>
         </div>
 
         <div class="card">
-            <img src="/images/Black-Shorts.jpg" />
+            <img src="/images/Neo Navy-Shorts.jpg" />
             <h3>Shorts</h3>
+        <p class="product-desc">Premium Casual Shorts</p>
             <p>Starting ₹399</p>
             <a href="/Home/Products?type=shorts" class="btn">View</a>
         </div>
 
         <div class="card">
-            <img src="/images/Black-Banyan.jpg" />
+            <img src="/images/blue-Banyan.jpg" />
             <h3>Banyan</h3>
+        <p class="product-desc">100% Cotton Vest</p>
             <p>Starting ₹199</p>
             <a href="/Home/Products?type=banyan" class="btn">View</a>
         </div>
-
+    <div class="card">
+        <img src="/images/Yellow-Hoodie.jpg" />
+        <h3>Hoodie</h3>
+        <p class="product-desc">Soft & comfortable fabric</p>
+        <p>Starting ₹799</p>
+        <a href="/Home/Products?type=Hoodie" class="btn">View</a>
+    </div>
+    <div class="card">
+        <img src="/images/Lightblue-jeans.jpg" />
+        <h3>jeans</h3>
+        <p class="product-desc">Comfortable regular fit</p>
+        <p>Starting ₹599</p>
+        <a href="/Home/Products?type=jeans" class="btn">View</a>
+    </div>
     </div>
 
-</div>
+    
